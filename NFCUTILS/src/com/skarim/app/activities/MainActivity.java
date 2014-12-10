@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewDebug.FlagToString;
 import android.widget.Button;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -44,6 +43,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View view) {
 
 		if(view.getId()==R.id.btnP2P){
+			Intent intent=new Intent(this, P2PSendActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 			
 		}else if(view.getId()==R.id.btnReadCard){
 			Intent intent=new Intent(this, ReadCard.class);

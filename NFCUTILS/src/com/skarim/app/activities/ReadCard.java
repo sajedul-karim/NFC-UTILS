@@ -14,7 +14,6 @@ import java.util.Date;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
@@ -23,7 +22,6 @@ import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.TextView;
@@ -38,7 +36,6 @@ public class ReadCard extends Activity {
 	/*********** Card Related variable **********************/
 	private NfcAdapter mAdapter;
 	private PendingIntent mPendingIntent;
-	private NdefMessage mNdefPushMessage;
 
 	private AlertDialog mDialog;
 
@@ -217,14 +214,16 @@ public class ReadCard extends Activity {
 	            info[0] += "Mifare " + type + "\n";
 	        } else if(techList[i].equals(IsoDep.class.getName())) {
 	            info[1] = "IsoDep";
-	            IsoDep isoDepTag = IsoDep.get(tag);
+	            @SuppressWarnings("unused")
+				IsoDep isoDepTag = IsoDep.get(tag);
 	            info[0] += "IsoDep \n";
 	        } else if(techList[i].equals(Ndef.class.getName())) {
 	            Ndef ndefTag = Ndef.get(tag);
 	            info[0] += "Is Writable: " + ndefTag.isWritable() + "\n" +
 	                    "Can Make ReadOnly: " + ndefTag.canMakeReadOnly() + "\n";
 	        } else if(techList[i].equals(NdefFormatable.class.getName())) {
-	            NdefFormatable ndefFormatableTag = NdefFormatable.get(tag);
+	            @SuppressWarnings("unused")
+				NdefFormatable ndefFormatableTag = NdefFormatable.get(tag);
 	            }
 	    } 
 
