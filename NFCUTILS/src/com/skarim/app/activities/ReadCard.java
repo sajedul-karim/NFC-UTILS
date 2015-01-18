@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 
 import com.example.nfcutils.R;
+import com.skarim.app.utils.CommonTasks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -101,40 +102,49 @@ public class ReadCard extends Activity {
 		if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
 				|| NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
 				|| NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-					
-			String[] info=getTagInfo(intent);
-			
+
+			String[] info = getTagInfo(intent);
+
 			tvCardData.append("\n");
-			for(int i=0; i<info.length;i++) {
-			    String someString = (String)info[i];
-			    tvCardData.append(someString);
+			for (int i = 0; i < info.length; i++) {
+				String someString = (String) info[i];
+				tvCardData.append(someString);
 			}
-		
+
 		}
 	}
 
-	public void readTag(Tag t) {
+	public void readMifareUltraLightC(Tag t) {
+		Log.d("skm", "===========Mifare Ultralight C Read Start==================");
 		Tag tag = t;
+		String.valueOf(getHex(tag.getId()));
+		String tagId = getHex(tag.getId());
+		Log.d("skm", "UID :" + tagId.trim());
+		Log.d("skm", "UID length:" + tagId.length());
 
 		MifareUltralight mifare = MifareUltralight.get(tag);
+		Log.d("skm", "Tag Type :" + mifare.getType());
 		try {
 			mifare.connect();
-			byte[] payload = mifare.readPages(4);
-			String pay = new String(payload, Charset.forName("US-ASCII"));
-			Log.d("hwt", pay);
+			String pay = "";
+			for (int i = 0; i < 45; i++) {
+				byte[] payload = mifare.readPages(i);
+				pay = new String(payload, Charset.forName("US-ASCII"));
+				Log.d("skm", "Data on page : " + i + " is : " + CommonTasks.getHexString(payload));
+			}
+
 			tvCardData.append("\n\n*****" + TIME_FORMAT.format(new Date())
 					+ "**********");
 			tvCardData.append("\npayLoad : " + pay);
-			
+
 		} catch (IOException e) {
-			Log.e("hwt",
-					"IOException while writing MifareUltralight message...", e);
+			Log.d("skm", e.getMessage());
 		} finally {
 			if (mifare != null) {
 				try {
 					mifare.close();
 				} catch (IOException e) {
-					Log.d("hwt", "Error closing tag...", e);
+					Log.d("skm", e.getMessage());
 				}
 			}
 		}
@@ -153,81 +163,87 @@ public class ReadCard extends Activity {
 		}
 		return sb.toString();
 	}
-	
+
 	private String[] getTagInfo(Intent intent) {
-	    Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-	    String prefix = "android.nfc.tech.";
-	    String[] info = new String[2];
+		Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		String prefix = "android.nfc.tech.";
+		String[] info = new String[2];
 
-	    // UID
-	    byte[] uid = tag.getId();
-	    info[0] = "UID In Hex: " + getHex(uid) + "\n";
+		// UID
+		byte[] uid = tag.getId();
+		info[0] = "UID In Hex: " + getHex(uid) + "\n";
 
-	    // Tech List
-	    String[] techList = tag.getTechList();
-	    String techListConcat = "Technologies: ";
-	    for(int i = 0; i < techList.length; i++) {
-	        techListConcat += techList[i].substring(prefix.length()) + ",";
-	    }
-	    info[0] += techListConcat.substring(0, techListConcat.length() - 1) + "\n\n";
+		// Tech List
+		String[] techList = tag.getTechList();
+		String techListConcat = "Technologies: ";
+		for (int i = 0; i < techList.length; i++) {
+			techListConcat += techList[i].substring(prefix.length()) + ",";
+		}
+		info[0] += techListConcat.substring(0, techListConcat.length() - 1)
+				+ "\n\n";
 
-	    // Mifare Classic/UltraLight Info
-	    info[0] += "Card Type: ";
-	    String type = "Unknown";
-	    for(int i = 0; i < techList.length; i++) {
-	        if(techList[i].equals(MifareClassic.class.getName())) {
-	            info[1] = "Mifare Classic";
-	            MifareClassic mifareClassicTag = MifareClassic.get(tag);
+		// Mifare Classic/UltraLight Info
+		info[0] += "Card Type: ";
+		String type = "Unknown";
+		for (int i = 0; i < techList.length; i++) {
+			if (techList[i].equals(MifareClassic.class.getName())) {
+				info[1] = "Mifare Classic";
+				MifareClassic mifareClassicTag = MifareClassic.get(tag);
 
-	            // Type Info
-	            switch (mifareClassicTag.getType()) {
-	            case MifareClassic.TYPE_CLASSIC:
-	                type = "Classic";
-	                break;
-	            case MifareClassic.TYPE_PLUS:
-	                type = "Plus";
-	                break;
-	            case MifareClassic.TYPE_PRO:
-	                type = "Pro";
-	                break;
-	            }
-	            info[0] += "Mifare " + type + "\n";
+				// Type Info
+				switch (mifareClassicTag.getType()) {
+				case MifareClassic.TYPE_CLASSIC:
+					type = "Classic";
+					MifareClassic mfc = MifareClassic.get(tag);
+					//readMifareClassic(mfc);
+					resolveIntentClassic(mfc);
+					break;
+				case MifareClassic.TYPE_PLUS:
+					type = "Plus";
+					break;
+				case MifareClassic.TYPE_PRO:
+					type = "Pro";
+					break;
+				}
+				info[0] += "Mifare " + type + "\n";
 
-	            // Size Info
-	            info[0] += "Size: " + mifareClassicTag.getSize() + " bytes \n" +
-	                    "Sector Count: " + mifareClassicTag.getSectorCount() + "\n" +
-	                    "Block Count: " + mifareClassicTag.getBlockCount() + "\n";
-	        } else if(techList[i].equals(MifareUltralight.class.getName())) {
-	            info[1] = "Mifare UltraLight";
-	            MifareUltralight mifareUlTag = MifareUltralight.get(tag);
+				// Size Info
+				info[0] += "Size: " + mifareClassicTag.getSize() + " bytes \n"
+						+ "Sector Count: " + mifareClassicTag.getSectorCount()
+						+ "\n" + "Block Count: "
+						+ mifareClassicTag.getBlockCount() + "\n";
+			} else if (techList[i].equals(MifareUltralight.class.getName())) {
+				info[1] = "Mifare UltraLight";
+				MifareUltralight mifareUlTag = MifareUltralight.get(tag);
 
-	            // Type Info
-	            switch (mifareUlTag.getType()) {
-	            case MifareUltralight.TYPE_ULTRALIGHT:
-	                type = "Ultralight";
-	                break;
-	            case MifareUltralight.TYPE_ULTRALIGHT_C:
-	                type = "Ultralight C";
-	                readTag(tag);
-	                break;
-	            }
-	            info[0] += "Mifare " + type + "\n";
-	        } else if(techList[i].equals(IsoDep.class.getName())) {
-	            info[1] = "IsoDep";
-	            @SuppressWarnings("unused")
+				// Type Info
+				switch (mifareUlTag.getType()) {
+				case MifareUltralight.TYPE_ULTRALIGHT:
+					type = "Ultralight";
+					break;
+				case MifareUltralight.TYPE_ULTRALIGHT_C:
+					type = "Ultralight C";
+					readMifareUltraLightC(tag);
+					break;
+				}
+				info[0] += "Mifare " + type + "\n";
+			} else if (techList[i].equals(IsoDep.class.getName())) {
+				info[1] = "IsoDep";
+				@SuppressWarnings("unused")
 				IsoDep isoDepTag = IsoDep.get(tag);
-	            info[0] += "IsoDep \n";
-	        } else if(techList[i].equals(Ndef.class.getName())) {
-	            Ndef ndefTag = Ndef.get(tag);
-	            info[0] += "Is Writable: " + ndefTag.isWritable() + "\n" +
-	                    "Can Make ReadOnly: " + ndefTag.canMakeReadOnly() + "\n";
-	        } else if(techList[i].equals(NdefFormatable.class.getName())) {
-	            @SuppressWarnings("unused")
+				info[0] += "IsoDep \n";
+			} else if (techList[i].equals(Ndef.class.getName())) {
+				Ndef ndefTag = Ndef.get(tag);
+				info[0] += "Is Writable: " + ndefTag.isWritable() + "\n"
+						+ "Can Make ReadOnly: " + ndefTag.canMakeReadOnly()
+						+ "\n";
+			} else if (techList[i].equals(NdefFormatable.class.getName())) {
+				@SuppressWarnings("unused")
 				NdefFormatable ndefFormatableTag = NdefFormatable.get(tag);
-	            }
-	    } 
+			}
+		}
 
-	    return info;
+		return info;
 	}
 
 	private void showMessage(int title, int message) {
@@ -256,5 +272,72 @@ public class ReadCard extends Activity {
 		builder.create().show();
 		return;
 	}
+	
+	private void resolveIntentClassic(MifareClassic _mfc) {
+		 
+		  
+		 
+		      //Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		      MifareClassic mfc = _mfc;
+		 
+		      try {
+		         mfc.connect();
+		 
+		         Log.d("skm","");
+		         Log.d("skm","== MifareClassic Info == ");
+		         Log.d("skm","Size: " + mfc.getSize());
+		         Log.d("skm","Type: " + mfc.getType());
+		         Log.d("skm","BlockCount: " + mfc.getBlockCount());
+		         Log.d("skm","MaxTransceiveLength: " + mfc.getMaxTransceiveLength());
+		         Log.d("skm","SectorCount: " + mfc.getSectorCount());
+		 
+		         Log.d("skm","Reading sectors...");
+		 
+		         for(int i = 0; i < mfc.getSectorCount(); ++i) {
+		 
+		            if(mfc.authenticateSectorWithKeyA(i, MifareClassic.KEY_MIFARE_APPLICATION_DIRECTORY)){
+		               Log.d("skm","Authorization granted to sector " + i + " with MAD key");
+		            } else if(mfc.authenticateSectorWithKeyA(i, MifareClassic.KEY_DEFAULT)) {
+		               Log.d("skm","Authorization granted to sector " + i + " with DEFAULT key");
+		            } else if(mfc.authenticateSectorWithKeyA(i, MifareClassic.KEY_NFC_FORUM)) {
+		               Log.d("skm","Authorization granted to sector " + i + " with NFC_FORUM key");
+		            } else {
+		               Log.d("skm","Authorization denied to sector " + i);
+		               continue;
+		            }            
+		 
+		            for(int k = 0; k < mfc.getBlockCountInSector(i); ++k)
+		            {
+		               int block = mfc.sectorToBlock(i) + k;
+		               byte[] data = null;
+		 
+		               try {
+		 
+		                  data = mfc.readBlock(block);
+		               } catch (IOException e) {
+		                  Log.d("skm","Block " + block + " data: " + e.getMessage());
+		                  continue;
+		               }
+		 
+		               String blockData = CommonTasks.getHexString(data);
+		               Log.d("skm","Block " + block + " data: " + blockData);
+		            }
+		         }
+		         mfc.close();
+		 
+		      } catch (IOException e) {
+		         Log.d("skm",e.getMessage());
+		      } finally {
+		         try {
+		            mfc.close();
+		         } catch (IOException e) {
+		            // TODO Auto-generated catch block
+		            e.printStackTrace();
+		         }
+		      }
+		  
+		}
+	
+	
 
 }
