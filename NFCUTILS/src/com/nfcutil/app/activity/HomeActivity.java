@@ -16,9 +16,12 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.example.nfcutils.R;
 import com.nfcutil.app.base.NFCUtilsBase;
+import com.nfcutil.app.entity.MifareUltraLightC;
 import com.nfcutil.app.util.CommonTask;
+import com.nfcutil.app.util.CommonValues;
 import com.skarim.app.utils.CommonTasks;
 
 public class HomeActivity extends NFCUtilsBase {
@@ -125,22 +128,31 @@ public class HomeActivity extends NFCUtilsBase {
 	}
 
 	private void readMifareUltraLightC(Tag t) {
-		ArrayList<String> dataList = new ArrayList<String>();
+		//ArrayList<String> dataList = new ArrayList<String>();
 		Log.d("skm",
 				"===========Mifare Ultralight C Read Start==================");
 		Tag tag = t;
 		String tagId;
-
+		MifareUltraLightC mifareUltraLightC;
 		MifareUltralight mifare = MifareUltralight.get(tag);
 		Log.d("skm", "Tag Type :" + mifare.getType());
 		try {
 			tagId = CommonTasks.getHexString(tag.getId());
 			Log.d("skm", "UID :" + tagId.trim());
 			mifare.connect();
-			for (int i = 0; i < 45; i++) {
-
+			for (int i = 0; i < 11; i++) {
+				mifareUltraLightC = new MifareUltraLightC();
+				mifareUltraLightC.Header = "Page " + (i*4) + " to " + (((i+1)*4)-1);
+				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(mifare.readPages(i*4));
+				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(mifare.readPages(((i*4)+1)));
+				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(mifare.readPages(((i*4)+2)));
+				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(mifare.readPages(((i*4)+3)));
+				CommonValues.getInstance().mifareUltraLightCList.add(mifareUltraLightC);
+				/*for(int j=(i*4); j<=(((i+1)*4)-1);j++){
+					mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(mifare.readPages(j));
+				}
 				byte[] payload = mifare.readPages(i);
-				dataList.add(i, CommonTasks.getHexString(payload));
+				dataList.add(i, CommonTasks.getHexString(payload));*/
 			}
 
 		} catch (IOException e) {
@@ -155,14 +167,14 @@ public class HomeActivity extends NFCUtilsBase {
 				}
 			}
 		}
-		for(int j=0;j<dataList.size();j++)
-		Log.d("skm", dataList.get(j));
+		//for(int j=0;j<dataList.size();j++)
+		//Log.d("skm", dataList.get(j));
 		
 		dialog.dismiss();
-		if(dataList.size()>0){
+		if(CommonValues.getInstance().mifareUltraLightCList.size()>0){
 			
 			  Intent intent=new  Intent(this,MifareUltralightCActivity.class);
-			  intent.putExtra("TAG_DATA", dataList); 
+			  intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
 			  startActivity(intent);
 			 
 		}

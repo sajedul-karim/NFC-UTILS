@@ -3,11 +3,13 @@ package com.nfcutil.app.util;
 import java.util.ArrayList;
 
 import com.nfcutil.app.entity.MifareClassic1k;
+import com.nfcutil.app.entity.MifareUltraLightC;
 
 public class CommonValues {
 	public static CommonValues commonValues;
 	
 	public ArrayList<MifareClassic1k> mifareClassic1kList = new ArrayList<MifareClassic1k>();
+	public ArrayList<MifareUltraLightC> mifareUltraLightCList = new ArrayList<MifareUltraLightC>();
 	
 	public static void Initalization(){
 		if(commonValues == null)
