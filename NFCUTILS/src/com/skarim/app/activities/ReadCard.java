@@ -2,7 +2,8 @@ package com.skarim.app.activities;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.nfcutils.R;
 import com.skarim.app.utils.CommonTasks;
@@ -10,13 +11,10 @@ import com.skarim.app.utils.CommonTasks;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
@@ -27,22 +25,23 @@ import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.provider.Settings;
+import android.widget.LinearLayout.LayoutParams;
 
 public class ReadCard extends Activity {
 
 	TextView tvCardData;
-	private static final DateFormat TIME_FORMAT = SimpleDateFormat
-			.getDateTimeInstance();
-
 	/*********** Card Related variable **********************/
 	private NfcAdapter mAdapter;
 	private PendingIntent mPendingIntent;
 
 	private AlertDialog mDialog;
-
-	public static Map<String, String> dataMap = new HashMap<String, String>();
+	
+	LinearLayout llParentLinearlayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +71,7 @@ public class ReadCard extends Activity {
 	private void setContentViews() {
 		tvCardData = (TextView) findViewById(R.id.tvCardData);
 		tvCardData.setMovementMethod(new ScrollingMovementMethod());
+		llParentLinearlayout=(LinearLayout) findViewById(R.id.llParentLinearlayout);
 
 	}
 
@@ -106,65 +106,7 @@ public class ReadCard extends Activity {
 		if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
 				|| NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
 				|| NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-
-			/*
-			 * String[] info = getTagInfo(intent);
-			 * 
-			 * tvCardData.append("\n"); for (int i = 0; i < info.length; i++) {
-			 * String someString = (String) info[i];
-			 * tvCardData.append(someString); }
-			 */
 			getTagInfo(intent);
-		}
-	}
-
-	public void readMifareUltraLightC(Tag t) {
-		Log.d("skm",
-				"===========Mifare Ultralight C Read Start==================");
-		tvCardData.append("\nReading Mifare Ultralight C ");
-		Tag tag = t;
-		String tagId = getHex(tag.getId());
-		tvCardData.append("\nTag ID :" + tagId);
-		Log.d("skm", "UID :" + tagId.trim());
-		Log.d("skm", "UID length:" + tagId.length());
-
-		MifareUltralight mifare = MifareUltralight.get(tag);
-		Log.d("skm", "Tag Type :" + mifare.getType());
-		tvCardData.append("\nTag Type :" + mifare.getType());
-		try {
-			mifare.connect();
-			String pay = "";
-			int count=0;
-			tvCardData.append("\n*******************0 to 3**************\n");
-			for (int i = 0; i < 45; i++) {
-				 if(count==4&i!=44){
-					tvCardData.append("\n\n*******************"+(i)+" to "+(i+4-1) +" **************");
-					count=0;
-				}
-				byte[] payload = mifare.readPages(i);
-				tvCardData.append("\n"+ CommonTasks.getHexString(payload));
-				pay = new String(payload, Charset.forName("US-ASCII"));
-				Log.d("skm",
-						"Data on page : " + i + " is : "
-								+ CommonTasks.getHexString(payload));
-				count++;
-			}
-
-			/*
-			 * tvCardData.append("\n\n*****" + TIME_FORMAT.format(new Date()) +
-			 * "**********"); tvCardData.append("\npayLoad : " + pay);
-			 */
-
-		} catch (IOException e) {
-			Log.d("skm", e.getMessage());
-		} finally {
-			if (mifare != null) {
-				try {
-					mifare.close();
-				} catch (IOException e) {
-					Log.d("skm", e.getMessage());
-				}
-			}
 		}
 	}
 
@@ -184,25 +126,9 @@ public class ReadCard extends Activity {
 
 	private String[] getTagInfo(Intent intent) {
 		Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-		String prefix = "android.nfc.tech.";
-		// String[] info = new String[2];
-
-		// UID
-		byte[] uid = tag.getId();
-		// //info[0] = "UID In Hex: " + getHex(uid) + "\n";
-
 		// Tech List
 		String[] techList = tag.getTechList();
-		String techListConcat = "Technologies: ";
-		for (int i = 0; i < techList.length; i++) {
-			techListConcat += techList[i].substring(prefix.length()) + ",";
-		}
-		// info[0] += techListConcat.substring(0, techListConcat.length() - 1)+
-		// "\n\n";
 
-		// Mifare Classic/UltraLight Info
-		// info[0] += "Card Type: ";
-		String type = "Unknown";
 		for (int i = 0; i < techList.length; i++) {
 			if (techList[i].equals(MifareClassic.class.getName())) {
 				// info[1] = "Mifare Classic";
@@ -211,27 +137,15 @@ public class ReadCard extends Activity {
 				// Type Info
 				switch (mifareClassicTag.getType()) {
 				case MifareClassic.TYPE_CLASSIC:
-					type = "Classic";
 					MifareClassic mfc = MifareClassic.get(tag);
 					// readMifareClassic(mfc);
 					resolveIntentClassic(mfc);
 					break;
 				case MifareClassic.TYPE_PLUS:
-					type = "Plus";
 					break;
 				case MifareClassic.TYPE_PRO:
-					type = "Pro";
 					break;
 				}
-				// info[0] += "Mifare " + type + "\n";
-
-				// Size Info
-				/*
-				 * //info[0] += "Size: " + mifareClassicTag.getSize() +
-				 * " bytes \n" + "Sector Count: " +
-				 * mifareClassicTag.getSectorCount() + "\n" + "Block Count: " +
-				 * mifareClassicTag.getBlockCount() + "\n";
-				 */
 			} else if (techList[i].equals(MifareUltralight.class.getName())) {
 				// info[1] = "Mifare UltraLight";
 				MifareUltralight mifareUlTag = MifareUltralight.get(tag);
@@ -239,10 +153,8 @@ public class ReadCard extends Activity {
 				// Type Info
 				switch (mifareUlTag.getType()) {
 				case MifareUltralight.TYPE_ULTRALIGHT:
-					type = "Ultralight";
 					break;
 				case MifareUltralight.TYPE_ULTRALIGHT_C:
-					type = "Ultralight C";
 					readMifareUltraLightC(tag);
 					break;
 				}
@@ -253,11 +165,7 @@ public class ReadCard extends Activity {
 				IsoDep isoDepTag = IsoDep.get(tag);
 				// info[0] += "IsoDep \n";
 			} else if (techList[i].equals(Ndef.class.getName())) {
-				Ndef ndefTag = Ndef.get(tag);
-				/*
-				 * //info[0] += "Is Writable: " + ndefTag.isWritable() + "\n" +
-				 * "Can Make ReadOnly: " + ndefTag.canMakeReadOnly() + "\n";
-				 */
+				Ndef.get(tag);
 			} else if (techList[i].equals(NdefFormatable.class.getName())) {
 				@SuppressWarnings("unused")
 				NdefFormatable ndefFormatableTag = NdefFormatable.get(tag);
@@ -294,53 +202,137 @@ public class ReadCard extends Activity {
 		return;
 	}
 
+	public void readMifareUltraLightC(Tag t) {
+		llParentLinearlayout.removeAllViews();
+		llParentLinearlayout.addView(tvCardData);
+		tvCardData.setVisibility(View.VISIBLE);
+		Log.d("skm",
+				"===========Mifare Ultralight C Read Start==================");
+		tvCardData.setText("\nReading Mifare Ultralight C ");
+		Tag tag = t;
+		String tagId = getHex(tag.getId());
+		tvCardData.append("\nTag ID :" + tagId);
+		Log.d("skm", "UID :" + tagId.trim());
+		Log.d("skm", "UID length:" + tagId.length());
+
+		MifareUltralight mifare = MifareUltralight.get(tag);
+		Log.d("skm", "Tag Type :" + mifare.getType());
+		tvCardData.append("\nTag Type :" + mifare.getType());
+		try {
+			mifare.connect();
+			int count = 0;
+			tvCardData.append("\n************* Page 0 to 3**************\n");
+			for (int i = 0; i < 45; i++) {
+				if (count == 4 & i != 44) {
+					tvCardData.append("\n\n*************** Page " + (i) + " to "
+							+ (i + 4 - 1) + " **************");
+					count = 0;
+				}
+				byte[] payload = mifare.readPages(i);
+				tvCardData.append("\n" + CommonTasks.getHexString(payload));
+				new String(payload, Charset.forName("US-ASCII"));
+				Log.d("skm",
+						"Data on page : " + i + " is : "
+								+ CommonTasks.getHexString(payload));
+				count++;
+			}
+
+		} catch (IOException e) {
+			Log.d("skm", e.getMessage());
+		} finally {
+			if (mifare != null) {
+				try {
+					mifare.close();
+				} catch (IOException e) {
+					Log.d("skm", e.getMessage());
+				}
+			}
+		}
+	}
+
 	private void resolveIntentClassic(MifareClassic _mfc) {
 
-		// Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		List<TextView> ltvTotal=new ArrayList<TextView>();
+		
+		llParentLinearlayout.removeAllViews();
 		MifareClassic mfc = _mfc;
 
 		try {
 			mfc.connect();
+			
+			TextView tv1 = new TextView(this);
+			tv1.setTextSize(16);
+			tv1.setTextColor(Color.RED);
+			tv1.setTypeface(null,Typeface.ITALIC);
+			tv1.setPadding(10, 10, 5, 0);
+			tv1.setGravity(Gravity.LEFT);
 
 			Log.d("skm", "");
 			Log.d("skm", "== MifareClassic Info == ");
-			tvCardData.setText("\n******************MifareClassic Info*********");
+			tv1.setText("\n***********MifareClassic Info*********");
 			Log.d("skm", "Size: " + mfc.getSize());
-			tvCardData.append("\nCard Type :"+mfc.getType());
-			tvCardData.append("\nMemory Size :"+mfc.getSize());
+			tv1.append("\nCard Type :" + mfc.getType());
+			tv1.append("\nMemory Size :" + mfc.getSize());
 			Log.d("skm", "Type: " + mfc.getType());
-			tvCardData.append("\nNumber of Sector :"+mfc.getSectorCount());
+			tv1.append("\nNumber of Sector :" + mfc.getSectorCount());
 			Log.d("skm", "BlockCount: " + mfc.getBlockCount());
-			tvCardData.append("\nNumber of Block in each sector :"+mfc.getBlockCount());
+			tv1.append("\nNumber of Block in each sector :"
+					+ mfc.getBlockCount());
 			Log.d("skm", "MaxTransceiveLength: " + mfc.getMaxTransceiveLength());
 			Log.d("skm", "SectorCount: " + mfc.getSectorCount());
 
 			Log.d("skm", "Reading sectors...");
-			tvCardData.append("\nReading Sectors.....");
+			
+			ltvTotal.add(tv1);
+			
+			
 			for (int i = 0; i < mfc.getSectorCount(); ++i) {
+				
+				/*LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				params.setMargins(5, 3, 0, 0);*/
+				TextView tv2 = new TextView(this);
+				tv2.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+				tv2.setTextSize(14);
+				tv2.setTextColor(Color.BLACK);
+				tv2.setPadding(5, 2, 5, 0);
+				tv2.setTypeface(null, Typeface.BOLD);
+				tv2.setGravity(Gravity.LEFT);
+				
 
 				if (mfc.authenticateSectorWithKeyA(i,
 						MifareClassic.KEY_MIFARE_APPLICATION_DIRECTORY)) {
-					Log.d("skm", "Authorized sector " + i+ " with MAD key");
-					tvCardData.append("\n\nAuthorized sector " + i+" with MAD key\n");
+					Log.d("skm", "Authorized sector " + i + " with MAD key");
+					tv2.setText("\nAuthorized sector " + i
+							+ " with MAD key");
 				} else if (mfc.authenticateSectorWithKeyA(i,
 						MifareClassic.KEY_DEFAULT)) {
 					Log.d("skm", "Authorization granted to sector " + i
 							+ " with DEFAULT key");
-					tvCardData.append("\n\nAuthorized sector " + i+ " with DEFAULT key\n");
+					tv2.append("\nAuthorized sector " + i
+							+ " with DEFAULT key");
 				} else if (mfc.authenticateSectorWithKeyA(i,
 						MifareClassic.KEY_NFC_FORUM)) {
 					Log.d("skm", "Authorization granted to sector " + i
 							+ " with NFC_FORUM key");
-					tvCardData.append("\n\nAuthorized sector " + i
-							+ " with NFC_FORUM key\n");
+					tv2.append("\nAuthorized sector " + i
+							+ " with NFC_FORUM key");
 				} else {
 					Log.d("skm", "Authorization denied to sector " + i);
-					tvCardData.append("\nAuthorization denied to sector " + i+"\n");
+					tv2.append("\nAuthorization denied to sector " + i
+							+ "");
 					continue;
 				}
+				
+				ltvTotal.add(tv2);
 
 				for (int k = 0; k < mfc.getBlockCountInSector(i); ++k) {
+					
+					TextView tv3 = new TextView(this);
+					tv3.setTextSize(12);
+					tv3.setTextColor(Color.BLUE);
+					tv3.setPadding(10, 0, 5, 0);
+					tv3.setGravity(Gravity.LEFT);
+					
 					int block = mfc.sectorToBlock(i) + k;
 					byte[] data = null;
 
@@ -350,13 +342,15 @@ public class ReadCard extends Activity {
 					} catch (IOException e) {
 						Log.d("skm",
 								"Block " + block + " data: " + e.getMessage());
-						tvCardData.append("\nBlock " + block + " data: " + e.getMessage());
+						tv3.append("\nBlock " + block + " data: "
+								+ e.getMessage());
 						continue;
 					}
 
 					String blockData = CommonTasks.getHexString(data);
 					Log.d("skm", "Block " + block + " data: " + blockData);
-					tvCardData.append("\n" + blockData);
+					tv3.append("\n"+block+"->  " + blockData);
+					ltvTotal.add(tv3);
 				}
 			}
 			mfc.close();
@@ -367,10 +361,14 @@ public class ReadCard extends Activity {
 			try {
 				mfc.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		
+		for(int i=0;i<ltvTotal.size();i++){
+			llParentLinearlayout.addView(ltvTotal.get(i));
+		}
+		
 
 	}
 
