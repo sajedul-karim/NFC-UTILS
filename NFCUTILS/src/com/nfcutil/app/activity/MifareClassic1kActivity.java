@@ -8,12 +8,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.example.nfcutils.R;
+import com.nfcutil.app.adapters.Classic1KAdapter;
 import com.nfcutil.app.base.NFCUtilsBase;
 import com.nfcutil.app.util.CommonValues;
 
 public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClickListener{
 	TextView tvUID, tvType, tvMemory, tvPage, tvBlock;
 	PinnedHeaderListView lvMifareClassic1k;
+	Classic1KAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -25,6 +27,7 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClick
 	@Override
 	protected void onResume() {
 		super.onResume();
+		setListValue();
 	}
 	
 	@Override
@@ -38,7 +41,7 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClick
 		tvMemory = (TextView) findViewById(R.id.tvMemory);
 		tvPage = (TextView) findViewById(R.id.tvPage);
 		tvBlock = (TextView) findViewById(R.id.tvBlock);
-		lvMifareClassic1k = (PinnedHeaderListView) findViewById(R.id.lvMifareUltralLightC);
+		lvMifareClassic1k = (PinnedHeaderListView) findViewById(R.id.lvMifareClassic1k);
 		
 		lvMifareClassic1k.setOnItemClickListener(this);
 		setValue();
@@ -57,7 +60,12 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClick
 		tvUID.setText(CommonValues.getInstance().UID);
 		tvType.setText(CommonValues.getInstance().Type);
 		tvMemory.setText(CommonValues.getInstance().Memory);
-		tvPage.setText(CommonValues.getInstance().ultraLightCPageCount);
-		tvBlock.setText(CommonValues.getInstance().ultraLightCPageSize);
+		tvPage.setText(CommonValues.getInstance().Block);
+		tvBlock.setText(CommonValues.getInstance().Sector);
+	}
+	
+	private void setListValue(){
+		adapter = new Classic1KAdapter(this, R.layout.classic_1k_individual_item, CommonValues.getInstance().mifareClassic1kList);
+		lvMifareClassic1k.setAdapter(adapter);
 	}
 }

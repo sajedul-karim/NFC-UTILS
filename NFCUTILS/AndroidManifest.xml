@@ -41,6 +41,11 @@
             android:name="com.nfcutil.app.activity.MifareUltralightCActivity"
             android:label="@string/app_name" >
         </activity>
+        
+         <activity
+            android:name="com.nfcutil.app.activity.MifareClassic1kActivity"
+            android:label="@string/app_name" >
+        </activity>
 
         <!--
         <activity

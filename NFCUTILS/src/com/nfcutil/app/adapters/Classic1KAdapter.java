@@ -3,6 +3,8 @@ package com.nfcutil.app.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
+
 import com.example.nfcutils.R;
 import com.nfcutil.app.entity.MifareClassic1k;
 
@@ -10,57 +12,94 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class Classic1KAdapter extends ArrayAdapter<MifareClassic1k> {
+public class Classic1KAdapter extends SectionedBaseAdapter {
 
 	ArrayList<MifareClassic1k> list = null;
 	MifareClassic1k classic1k;
 	Context context;
 
-	public Classic1KAdapter(Context _context, int resource,
+	public Classic1KAdapter(Context _context, 
 			int textViewResourceId, List<MifareClassic1k> objects) {
-		super(_context, resource, textViewResourceId, objects);
 		context = _context;
 		list = (ArrayList<MifareClassic1k>) objects;
 	}
 
 	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return list.size();
-	}
-
-	@Override
-	public MifareClassic1k getItem(int position) {
+	public MifareClassic1k getItem(int section, int position) {
 		// TODO Auto-generated method stub
 		return list.get(position);
 	}
 
 	@Override
-	public long getItemId(int position) {
-		return position;
+	public long getItemId(int section, int position) {
+		// TODO Auto-generated method stub
+		return list.get(position).hashCode();
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View classic1KView = convertView;
+	public int getSectionCount() {
+		// TODO Auto-generated method stub
+		return list.size();
+	}
+
+	@Override
+	public int getCountForSection(int section) {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+
+	@Override
+	public View getItemView(int section, int position, View convertView,
+			ViewGroup parent) {
+		View ultralightCView = convertView;
 
 		try {
 			classic1k = list.get(position);
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				classic1KView = inflater.inflate(R.layout.classic_1k_individual_item, null);
+				ultralightCView = inflater.inflate(
+						R.layout.classic_1k_individual_item, null);
 			}
-			TextView tvPage1=(TextView) classic1KView.findViewById(R.id.tvPage1);
-			TextView tvPage2=(TextView) classic1KView.findViewById(R.id.tvPage2);
-			TextView tvPage3=(TextView) classic1KView.findViewById(R.id.tvPage3);
-			TextView tvPage4=(TextView) classic1KView.findViewById(R.id.tvPage4);
+			TextView tvPage1 = (TextView) ultralightCView.findViewById(R.id.tvPage1);
+			TextView tvPage2 = (TextView) ultralightCView.findViewById(R.id.tvPage2);
+			TextView tvPage3 = (TextView) ultralightCView.findViewById(R.id.tvPage3);
+			TextView tvPage4 = (TextView) ultralightCView.findViewById(R.id.tvPage4);
+			
+			tvPage1.setText(classic1k.Block1Value);
+			tvPage2.setText(classic1k.Block2Value);
+			tvPage3.setText(classic1k.Block3Value);
+			tvPage4.setText(classic1k.Block4Value);
+			
+			ultralightCView.setTag(ultralightCView);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
-		return classic1KView;
+		return ultralightCView;
+	}
+
+	@Override
+	public View getSectionHeaderView(int section, View convertView,
+			ViewGroup parent) {
+		View ultralightCView = convertView;
+
+		try {
+			classic1k = list.get(section);
+			if (convertView == null) {
+				LayoutInflater inflater = (LayoutInflater) context
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				ultralightCView = inflater.inflate(
+						R.layout.header_layout, null);
+			}
+			TextView tvPage1 = (TextView) ultralightCView.findViewById(R.id.textItem);
+			
+			tvPage1.setText("Sector : "+classic1k.Header);
+			
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		return ultralightCView;
 	}
 }

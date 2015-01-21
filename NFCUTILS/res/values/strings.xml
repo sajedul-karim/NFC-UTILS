@@ -18,6 +18,6 @@
     <string name="type">Type</string>
     <string name="memory">Memory</string>
     <string name="page">Number Of Block</string>
-    <string name="block_size">Each BLock Size</string>
+    <string name="block_size">Number of Sector</string>
     <string name="block_value">Block Value</string>
 </resources>

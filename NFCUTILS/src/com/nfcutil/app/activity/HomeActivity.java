@@ -192,7 +192,7 @@ public class HomeActivity extends NFCUtilsBase {
 	}
 
 	public void getMifareClassic1KData(MifareClassic _mfc) {
-
+		CommonValues.getInstance().mifareClassic1kList.clear();
 		MifareClassic mfc = _mfc;
 		MifareClassic1k classic1k;
 		try {
@@ -279,8 +279,8 @@ public class HomeActivity extends NFCUtilsBase {
 
 		}
 		
-		if(CommonValues.getInstance().mifareClassic1kList.size()>0){
-			Intent intent = new Intent(this, MifareClassic1k.class);
+		if(CommonValues.getInstance().mifareClassic1kList.size()==16){
+			Intent intent = new Intent(this, MifareClassic1kActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
 		}
