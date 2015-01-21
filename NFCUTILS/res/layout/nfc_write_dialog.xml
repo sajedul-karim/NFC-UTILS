@@ -1,43 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@android:color/white" >
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
     <RelativeLayout
-        android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_margin="5dp" >
-        <TextView 
-            android:id="@+id/tvSpinnerName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Block "
-            android:layout_centerVertical="true"
-            android:textColor="@color/header_text"
-            android:textSize="15sp"
-            android:textStyle="bold"/>
+        android:layout_margin="5dp"
+        android:padding="10dp" >
 
-        <Spinner
-            android:id="@+id/spBlockNumber"
+        <RelativeLayout
+            android:id="@+id/rlSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tvSpinnerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Write Selected Block "
+                android:textColor="@color/header_text"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spBlockNumber"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@id/tvSpinnerName" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlshowvalue"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/tvSpinnerName"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" />
+            android:layout_below="@id/rlSpinner" >
+
+            <TextView
+                android:id="@+id/tvShowValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Show Value as "
+                android:textColor="@color/header_text"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spShowBlockValue"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@id/tvShowValue" />
+        </RelativeLayout>
     </RelativeLayout>
-    <include 
-        android:id="@+id/inc_nfc_basic_view"
+	<View 
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:background="@android:color/darker_gray"
+	    android:layout_marginTop="2dp"/>
+    <LinearLayout
+        android:id="@+id/llViewOfValue"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/layout_basic_view"/>
-    <include 
-        android:id="@+id/inc_nfc_basic_write"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="15dp" >
+
+        <TextView
+            android:id="@+id/value1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/value2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/value3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/value4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llEditOfValue"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/layout_value_write_page"
-        android:visibility="gone"/>
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <EditText
+            android:id="@+id/etNFCValue"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:inputType="text"
+            android:textColor="#000"
+            android:textStyle="normal" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#DADADA" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/rlCancel"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:padding="5dp" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="Cancel"
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:textStyle="normal" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#DADADA" />
+
+            <RelativeLayout
+                android:id="@+id/rlOK"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:padding="5dp" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="Write"
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:textStyle="normal" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
