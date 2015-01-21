@@ -17,7 +17,7 @@
     <string name="uid">UID</string>
     <string name="type">Type</string>
     <string name="memory">Memory</string>
-    <string name="page">Page</string>
-    <string name="block_size">BLock Size</string>
+    <string name="page">Number Of Block</string>
+    <string name="block_size">Each BLock Size</string>
     <string name="block_value">Block Value</string>
 </resources>
