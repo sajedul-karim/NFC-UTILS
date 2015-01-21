@@ -1,9 +1,15 @@
 package com.nfcutil.app.activity;
 
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
@@ -55,7 +61,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 		try{
 			if((position%2) != 0){
 				mifareUltraLightC = (MifareUltraLightC) view.getTag();
-				Toast.makeText(this, mifareUltraLightC.toString(), Toast.LENGTH_SHORT).show();
+				showValue(mifareUltraLightC);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -73,5 +79,45 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	private void setListValue(){
 		adapter = new MifareUltraLightCAdapter(this, R.layout.classic_1k_individual_item, CommonValues.getInstance().mifareUltraLightCList);
 		lvMifareUltralLightC.setAdapter(adapter);
+	}
+	
+	private void showValue(MifareUltraLightC _mifareUltraLightC){
+		Dialog dialog = new Dialog(this, AlertDialog.THEME_HOLO_LIGHT);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.nfc_write_dialog);
+		dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;	
+		
+		final Spinner spBlockNumber = (Spinner) dialog.findViewById(R.id.spBlockNumber);
+		TextView value1 = (TextView) dialog.findViewById(R.id.value1);
+		TextView value2 = (TextView) dialog.findViewById(R.id.value2);
+		TextView value3 = (TextView) dialog.findViewById(R.id.value3);
+		TextView value4 = (TextView) dialog.findViewById(R.id.value4);
+		
+		String[] value = {""+_mifareUltraLightC.block1, ""+_mifareUltraLightC.block2,""+_mifareUltraLightC.block3,""+_mifareUltraLightC.block4};
+		spBlockNumber.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line	, value));
+		
+		value1.setText(_mifareUltraLightC.pagevalue1);
+		value2.setText(_mifareUltraLightC.pagevalue2);
+		value3.setText(_mifareUltraLightC.pagevalue3);
+		value4.setText(_mifareUltraLightC.pagevalue4);
+		
+		spBlockNumber.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View view,
+					int position, long id) {
+				String blockNumber = (String) spBlockNumber.getItemAtPosition(position);
+				Toast.makeText(getApplicationContext(), blockNumber, Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> adapterView) {
+				
+			}
+		});
+		
+		
+		dialog.show();
+		
 	}
 }

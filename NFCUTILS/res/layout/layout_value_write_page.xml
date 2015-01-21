@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white" >
+    <EditText 
+        android:id="@+id/etNFCValue"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textStyle="normal"
+        android:inputType="text"
+        android:layout_margin="10dp"/>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#DADADA"/>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+        <RelativeLayout 
+            android:id="@+id/rlCancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:padding="5dp">
+            <TextView 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+               	android:layout_centerVertical="true"	
+               	android:gravity="center"
+                android:text="Cancel"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:textStyle="normal"/>
+        </RelativeLayout>
+         <View 
+	        android:layout_width="1dp"
+	        android:layout_height="fill_parent"
+	        android:background="#DADADA"/>
+        
+        <RelativeLayout 
+            android:id="@+id/rlOK"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:padding="5dp">
+            <TextView 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"	
+               	android:gravity="center"
+                android:text="OK"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:textStyle="normal"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

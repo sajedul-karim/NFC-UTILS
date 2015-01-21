@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white" >
+    <RelativeLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="5dp" >
+        <TextView 
+            android:id="@+id/tvSpinnerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Block "
+            android:layout_centerVertical="true"
+            android:textColor="@color/header_text"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spBlockNumber"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tvSpinnerName"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+    </RelativeLayout>
+    <include 
+        android:id="@+id/inc_nfc_basic_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/layout_basic_view"/>
+    <include 
+        android:id="@+id/inc_nfc_basic_write"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/layout_value_write_page"
+        android:visibility="gone"/>
+</LinearLayout>
