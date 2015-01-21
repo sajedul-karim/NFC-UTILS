@@ -18,26 +18,32 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/noTitleBar" >
-        
         <activity
             android:name="com.nfcutil.app.activity.SplashScreenActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.nfcutil.app.activity.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
-				<action android:name="android.nfc.action.TAG_DISCOVERED" />
+                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         
-         <!-- <activity
+        <activity
+            android:name="com.nfcutil.app.activity.MifareUltralightCActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <!--
+        <activity
             android:name="com.skarim.app.activities.ReadCard"
             android:label="@string/app_name" >
             <intent-filter>
@@ -57,8 +63,9 @@
 
                 <data android:mimeType="application/skarim.nfc.beam" />
             </intent-filter>
-        </activity> -->
-        
+        </activity>
+        -->
+
     </application>
 
 </manifest>
