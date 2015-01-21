@@ -23,20 +23,5 @@ public class MifareUltralightCActivity extends NFCUtilsBase {
 	protected void onCreate(Bundle saveInstance) {
 		super.onCreate(saveInstance);
 		setContentView(R.layout.activity_mifare_ultralight_c);
-		tvDataField = (TextView) findViewById(R.id.tvDataField);
-		//parseIntent(getIntent().getExtras());
 	}
-
-	/*private void parseIntent(Bundle _bundle) {
-		dataList = _bundle.getStringArrayList("TAG_DATA");
-		MifareUltraLightC c;
-		for (int i = 0; i < dataList.size(); i++) {
-			c = new MifareUltraLightC();
-			c.Header = i;
-			c.pagevalue = dataList.get(i);
-			objList.add(c);
-		}
-		dataList.clear();
-
-	}*/
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tabHeaderText">#B5B5B5</color>
+    <color name="bottom_text_color">#ffffff</color>
+    <color name="header_text">#FFC000</color>
+    <color name="home_item_bg">#000000</color>
+</resources>
