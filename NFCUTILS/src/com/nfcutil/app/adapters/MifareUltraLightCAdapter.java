@@ -9,6 +9,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nfcutils.R;
@@ -28,17 +29,19 @@ public class MifareUltraLightCAdapter extends SectionedBaseAdapter {
 
 	@Override
 	public MifareUltraLightC getItem(int section, int position) {
-		return ultraLightCList.get(position);
+		//return ultraLightCList.get(position);
+		return null;
 	}
 
 	@Override
 	public long getItemId(int section, int position) {
-		return ultraLightCList.get(position).hashCode();
+		//return ultraLightCList.get(position).hashCode();
+		return 0;
 	}
 
 	@Override
 	public int getSectionCount() {
-		return ultraLightCList.size();
+		return 11;
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public class MifareUltraLightCAdapter extends SectionedBaseAdapter {
 		View ultralightCView = convertView;
 
 		try {
-			ultraLightC = ultraLightCList.get(position);
+			ultraLightC = ultraLightCList.get(section);
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -69,7 +72,7 @@ public class MifareUltraLightCAdapter extends SectionedBaseAdapter {
 			tvPage3.setText(ultraLightC.pagevalue3);
 			tvPage4.setText(ultraLightC.pagevalue4);
 			
-			ultralightCView.setTag(ultralightCView);
+			ultralightCView.setTag(ultraLightC);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
@@ -93,6 +96,7 @@ public class MifareUltraLightCAdapter extends SectionedBaseAdapter {
 			
 			tvPage1.setText(ultraLightC.Header);
 			
+			ultralightCView.setTag(ultraLightC);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}

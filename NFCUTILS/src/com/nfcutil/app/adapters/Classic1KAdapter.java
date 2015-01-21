@@ -28,78 +28,74 @@ public class Classic1KAdapter extends SectionedBaseAdapter {
 
 	@Override
 	public MifareClassic1k getItem(int section, int position) {
-		// TODO Auto-generated method stub
-		return list.get(position);
+		return null;
 	}
 
 	@Override
 	public long getItemId(int section, int position) {
-		// TODO Auto-generated method stub
-		return list.get(position).hashCode();
+		return 0;
 	}
 
 	@Override
 	public int getSectionCount() {
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 
 	@Override
 	public int getCountForSection(int section) {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 
 	@Override
 	public View getItemView(int section, int position, View convertView,
 			ViewGroup parent) {
-		View ultralightCView = convertView;
+		View mifareClassic1kView = convertView;
 
 		try {
 			classic1k = list.get(position);
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				ultralightCView = inflater.inflate(
+				mifareClassic1kView = inflater.inflate(
 						R.layout.classic_1k_individual_item, null);
 			}
-			TextView tvPage1 = (TextView) ultralightCView.findViewById(R.id.tvPage1);
-			TextView tvPage2 = (TextView) ultralightCView.findViewById(R.id.tvPage2);
-			TextView tvPage3 = (TextView) ultralightCView.findViewById(R.id.tvPage3);
-			TextView tvPage4 = (TextView) ultralightCView.findViewById(R.id.tvPage4);
+			TextView tvPage1 = (TextView) mifareClassic1kView.findViewById(R.id.tvPage1);
+			TextView tvPage2 = (TextView) mifareClassic1kView.findViewById(R.id.tvPage2);
+			TextView tvPage3 = (TextView) mifareClassic1kView.findViewById(R.id.tvPage3);
+			TextView tvPage4 = (TextView) mifareClassic1kView.findViewById(R.id.tvPage4);
 			
 			tvPage1.setText(classic1k.Block1Value);
 			tvPage2.setText(classic1k.Block2Value);
 			tvPage3.setText(classic1k.Block3Value);
 			tvPage4.setText(classic1k.Block4Value);
 			
-			ultralightCView.setTag(ultralightCView);
+			mifareClassic1kView.setTag(classic1k);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
-		return ultralightCView;
+		return mifareClassic1kView;
 	}
 
 	@Override
 	public View getSectionHeaderView(int section, View convertView,
 			ViewGroup parent) {
-		View ultralightCView = convertView;
+		View mifareClassic1kView = convertView;
 
 		try {
 			classic1k = list.get(section);
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				ultralightCView = inflater.inflate(
+				mifareClassic1kView = inflater.inflate(
 						R.layout.header_layout, null);
 			}
-			TextView tvPage1 = (TextView) ultralightCView.findViewById(R.id.textItem);
+			TextView tvPage1 = (TextView) mifareClassic1kView.findViewById(R.id.textItem);
 			
 			tvPage1.setText("Sector : "+classic1k.Header);
-			
+			mifareClassic1kView.setTag(classic1k);
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
-		return ultralightCView;
+		return mifareClassic1kView;
 	}
 }

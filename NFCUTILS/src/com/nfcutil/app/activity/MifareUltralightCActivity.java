@@ -4,18 +4,21 @@ import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.example.nfcutils.R;
 import com.nfcutil.app.adapters.MifareUltraLightCAdapter;
 import com.nfcutil.app.base.NFCUtilsBase;
+import com.nfcutil.app.entity.MifareUltraLightC;
 import com.nfcutil.app.util.CommonValues;
 
 public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemClickListener {
 	TextView tvUID, tvType, tvMemory, tvPage, tvBlock;
 	PinnedHeaderListView lvMifareUltralLightC;
 	MifareUltraLightCAdapter adapter;
+	MifareUltraLightC mifareUltraLightC;
 	
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -50,7 +53,10 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 		try{
-			
+			if((position%2) != 0){
+				mifareUltraLightC = (MifareUltraLightC) view.getTag();
+				Toast.makeText(this, mifareUltraLightC.toString(), Toast.LENGTH_SHORT).show();
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

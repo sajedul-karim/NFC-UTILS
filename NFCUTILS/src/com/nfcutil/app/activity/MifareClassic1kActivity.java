@@ -6,16 +6,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nfcutils.R;
 import com.nfcutil.app.adapters.Classic1KAdapter;
 import com.nfcutil.app.base.NFCUtilsBase;
+import com.nfcutil.app.entity.MifareClassic1k;
+import com.nfcutil.app.entity.MifareUltraLightC;
 import com.nfcutil.app.util.CommonValues;
 
 public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClickListener{
 	TextView tvUID, tvType, tvMemory, tvPage, tvBlock;
 	PinnedHeaderListView lvMifareClassic1k;
 	Classic1KAdapter adapter;
+	MifareClassic1k mifareClassic1k;
 	
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -50,7 +54,10 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClick
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 		try{
-			
+			if((position%2) != 0){
+				mifareClassic1k = (MifareClassic1k) view.getTag();
+				Toast.makeText(this, mifareClassic1k.toString(), Toast.LENGTH_SHORT).show();
+			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
