@@ -1,6 +1,7 @@
 package com.nfcutil.app.activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -14,6 +15,7 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.nfcutils.R;
 import com.nfcutil.app.base.NFCUtilsBase;
@@ -129,6 +131,7 @@ public class HomeActivity extends NFCUtilsBase {
 
 	private void readMifareUltraLightC(Tag t) {
 		// ArrayList<String> dataList = new ArrayList<String>();
+		CommonValues.getInstance().mifareUltraLightCList.clear();
 		Log.d("skm",
 				"===========Mifare Ultralight C Read Start==================");
 		Tag tag = t;
@@ -177,12 +180,14 @@ public class HomeActivity extends NFCUtilsBase {
 		}
 
 		dialog.dismiss();
-		if (CommonValues.getInstance().mifareUltraLightCList.size() > 0) {
+		if (CommonValues.getInstance().mifareUltraLightCList.size() == 11) {
 
 			Intent intent = new Intent(this, MifareUltralightCActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
 
+		}else{
+			Toast.makeText(this, "Please Hold your card again! Until Progress bar will be finished!", Toast.LENGTH_LONG).show();
 		}
 	}
 

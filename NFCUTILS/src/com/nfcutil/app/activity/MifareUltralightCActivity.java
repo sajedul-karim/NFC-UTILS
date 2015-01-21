@@ -8,13 +8,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.example.nfcutils.R;
+import com.nfcutil.app.adapters.MifareUltraLightCAdapter;
 import com.nfcutil.app.base.NFCUtilsBase;
 import com.nfcutil.app.util.CommonValues;
 
 public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemClickListener {
 	TextView tvUID, tvType, tvMemory, tvPage, tvBlock;
 	PinnedHeaderListView lvMifareUltralLightC;
-
+	MifareUltraLightCAdapter adapter;
+	
 	@Override
 	protected void onCreate(Bundle saveInstance) {
 		super.onCreate(saveInstance);
@@ -25,6 +27,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	@Override
 	protected void onResume() {
 		super.onResume();
+		setListValue();
 	}
 	
 	@Override
@@ -59,5 +62,10 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 		tvMemory.setText(CommonValues.getInstance().Memory);
 		tvPage.setText(CommonValues.getInstance().ultraLightCPageCount);
 		tvBlock.setText(CommonValues.getInstance().ultraLightCPageSize);
+	}
+	
+	private void setListValue(){
+		adapter = new MifareUltraLightCAdapter(this, R.layout.classic_1k_individual_item, CommonValues.getInstance().mifareUltraLightCList);
+		lvMifareUltralLightC.setAdapter(adapter);
 	}
 }
