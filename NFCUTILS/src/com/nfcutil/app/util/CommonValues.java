@@ -16,6 +16,8 @@ public class CommonValues {
 	public String Memory;
 	public String Sector;
 	public String Block;
+	public String ultraLightCPageSize;
+	public String ultraLightCPageCount;
 	
 	public static void Initalization(){
 		if(commonValues == null)
