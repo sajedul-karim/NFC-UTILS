@@ -144,7 +144,8 @@
             android:layout_margin="10dp"
             android:inputType="text"
             android:textColor="#000"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            android:maxLength="4" />
 
         <View
             android:layout_width="fill_parent"

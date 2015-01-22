@@ -2,6 +2,12 @@ package com.nfcutil.app.activity;
 
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
@@ -22,6 +29,7 @@ import com.nfcutil.app.base.NFCUtilsBase;
 import com.nfcutil.app.entity.MifareUltraLightC;
 import com.nfcutil.app.util.CommonTask;
 import com.nfcutil.app.util.CommonValues;
+import com.nfcutil.app.util.NFCHammer;
 
 public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemClickListener{
 	TextView tvUID, tvType, tvMemory, tvPage, tvBlock, value1, value2, value3, value4;
@@ -32,6 +40,11 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	EditText etNFCValue;
 	RelativeLayout rlCancel, rlOK, rlshowvalue;
 	Spinner spBlockNumber, spShowBlockValue;
+	String selectedBlockNumber;
+	NfcAdapter mAdapter;
+	PendingIntent mPendingIntent;
+	Tag tag;
+	AlertDialog writeAlertDialog ;
 	
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -49,6 +62,9 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	@Override
 	protected void onPause() {
 		super.onPause();
+		if (mAdapter != null) {
+			mAdapter.disableForegroundDispatch(this);
+		}
 	}
 
 	private void Initalization() {
@@ -94,6 +110,8 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 		LayoutInflater inflater = this.getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.nfc_write_dialog, null);
 		builder.setView(dialogView);
+		final AlertDialog alertDialog = builder.create();
+		alertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 		
 		spBlockNumber = (Spinner) dialogView.findViewById(R.id.spBlockNumber);
 		spShowBlockValue = (Spinner) dialogView.findViewById(R.id.spShowBlockValue);
@@ -112,8 +130,6 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 		spBlockNumber.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, valueOfULC));
 		spShowBlockValue.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, convertOfULCValue));
 		
-		/*rlOK.setOnClickListener(this);
-		rlCancel.setOnClickListener(this);*/
 		llViewOfValue.setVisibility(View.VISIBLE);
 		llEditOfValue.setVisibility(View.GONE);
 		
@@ -153,19 +169,19 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				String value = (String) spBlockNumber.getItemAtPosition(position);
-				if(!value.equals("Select One") && position != 0){
+				selectedBlockNumber = (String) spBlockNumber.getItemAtPosition(position);
+				if(!selectedBlockNumber.equals("Select One") && position != 0){
 					llViewOfValue.setVisibility(View.GONE);
 					llEditOfValue.setVisibility(View.VISIBLE);
 					rlshowvalue.setVisibility(View.GONE);
 					if(position == 1){
-						etNFCValue.setText(CommonTask.hexToAscii(_mifareUltraLightC.pagevalue1));
+						etNFCValue.setText(_mifareUltraLightC.pagevalue1.equals("00000000")?"":CommonTask.hexToAscii(_mifareUltraLightC.pagevalue1));
 					}else if(position == 2){
-						etNFCValue.setText(CommonTask.hexToAscii(_mifareUltraLightC.pagevalue2));
+						etNFCValue.setText(_mifareUltraLightC.pagevalue2.equals("00000000")?"":CommonTask.hexToAscii(_mifareUltraLightC.pagevalue2));
 					}else if(position == 3){
-						etNFCValue.setText(CommonTask.hexToAscii(_mifareUltraLightC.pagevalue3));
+						etNFCValue.setText(_mifareUltraLightC.pagevalue3.equals("00000000")?"":CommonTask.hexToAscii(_mifareUltraLightC.pagevalue3));
 					}else if(position == 4){
-						etNFCValue.setText(CommonTask.hexToAscii(_mifareUltraLightC.pagevalue4));
+						etNFCValue.setText(_mifareUltraLightC.pagevalue4.equals("00000000")?"":CommonTask.hexToAscii(_mifareUltraLightC.pagevalue4));
 					}
 				}else{
 					llViewOfValue.setVisibility(View.VISIBLE);
@@ -180,11 +196,109 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 			}
 		});
 		
-		AlertDialog alertDialog = builder.create();
-		alertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+		rlCancel.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View view) {
+				alertDialog.dismiss();
+			}
+		});
+		
+		rlOK.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				if(!selectedBlockNumber.equals("Select One")){
+					alertDialog.dismiss();
+					writeULCValue(etNFCValue.getText().toString(), Integer.parseInt(selectedBlockNumber));
+				}
+			}
+		});
+		
+		
 		alertDialog.show();
 		
 	}
 
+	private void writeULCValue(String value, int blocknumber){
+		try{
+			AlertDialog.Builder writeBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+			writeBuilder.setTitle("NFC Write");
+			writeBuilder.setMessage("Please Tap the card!!!");
+			writeBuilder.setCancelable(false);
+			writeBuilder.setNegativeButton("Dismis", new DialogInterface.OnClickListener() {				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if (mAdapter != null) {
+						mAdapter.disableForegroundDispatch(MifareUltralightCActivity.this);
+					}
+					dialog.dismiss();					
+				}
+			});
+			writeAlertDialog = writeBuilder.create();
+			writeAlertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;			
+			
+			mAdapter = NfcAdapter.getDefaultAdapter(this);
+			if (mAdapter == null) {
+				CommonTask.showMessage(this, R.string.error, R.string.no_nfc);
+				// finish();
+				return;
+			}
+			mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+					getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+			if (mAdapter != null) {
+				if (!mAdapter.isEnabled()) {
+					CommonTask.showWirelessSettingsDialog(this);
+				}
+				mAdapter.enableForegroundDispatch(this, mPendingIntent, null, null);
+			}
+			writeAlertDialog.show();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		resolveIntent(intent);
+	}
+
+	private void resolveIntent(Intent intent) {
+		String action = intent.getAction();
+		if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+				|| NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
+				|| NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+			getTagInfo(intent);
+		}
+	}
+
+	private void getTagInfo(Intent intent) {
+		tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		String[] techList = tag.getTechList();
+		for (int i = 0; i < techList.length; i++) {
+			if (techList[i].equals(MifareUltralight.class.getName())) {
+				MifareUltralight mifareUlTag = MifareUltralight.get(tag);
+				switch (mifareUlTag.getType()) {
+				case MifareUltralight.TYPE_ULTRALIGHT:
+					break;
+				case MifareUltralight.TYPE_ULTRALIGHT_C:
+					boolean result = NFCHammer.writeOnMifareUltralightC(this, tag, etNFCValue.getText().toString(),Integer.parseInt(selectedBlockNumber));
+					if(result){
+						result = NFCHammer.ReadULCValue(this, tag);
+						if(result){
+							adapter = new MifareUltraLightCAdapter(this, R.layout.classic_1k_individual_item, CommonValues.getInstance().mifareUltraLightCList);
+							writeAlertDialog.dismiss();
+							
+							adapter.notifyDataSetChanged();
+						}
+					}
+					break;
+				}
+				break;
+			}else{
+				//Toast.makeText(this, "Please Tap the UltraLight tag.", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
 	
 }
