@@ -43,27 +43,26 @@ public class NFCHammer {
 				mifareUltraLightC = new MifareUltraLightC();
 				mifareUltraLightC.Header = "Page " + (i * 4) + " to "
 						+ (((i + 1) * 4) - 1);
-				
-				
-				
-				/*mifareUltraLightC.pagevalue1 = new String(mifare
-						.readPages(i * 4),Charset.forName("US-ASCII"));
-				mifareUltraLightC.pagevalue2 = new String(mifare
-						.readPages(((i * 4) + 1)),Charset.forName("US-ASCII"));
-				mifareUltraLightC.pagevalue3 = new String(mifare
-						.readPages(((i * 4) + 2)),Charset.forName("US-ASCII"));
-				mifareUltraLightC.pagevalue4 = new String(mifare
-						.readPages(((i * 4) + 3)),Charset.forName("US-ASCII"));	*/		
-				
-				
-				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(mifare
-						.readPages(i * 4)).substring(0, 8);
-				mifareUltraLightC.pagevalue2 = CommonTasks.getHexString(mifare
-						.readPages(((i * 4) + 1))).substring(0, 8);
-				mifareUltraLightC.pagevalue3 = CommonTasks.getHexString(mifare
-						.readPages(((i * 4) + 2))).substring(0, 8);
-				mifareUltraLightC.pagevalue4 = CommonTasks.getHexString(mifare
-						.readPages(((i * 4) + 3))).substring(0, 8);
+
+				/*
+				 * mifareUltraLightC.pagevalue1 = new String(mifare .readPages(i
+				 * * 4),Charset.forName("US-ASCII"));
+				 * mifareUltraLightC.pagevalue2 = new String(mifare
+				 * .readPages(((i * 4) + 1)),Charset.forName("US-ASCII"));
+				 * mifareUltraLightC.pagevalue3 = new String(mifare
+				 * .readPages(((i * 4) + 2)),Charset.forName("US-ASCII"));
+				 * mifareUltraLightC.pagevalue4 = new String(mifare
+				 * .readPages(((i * 4) + 3)),Charset.forName("US-ASCII"));
+				 */
+
+				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(
+						mifare.readPages(i * 4)).substring(0, 8);
+				mifareUltraLightC.pagevalue2 = CommonTasks.getHexString(
+						mifare.readPages(((i * 4) + 1))).substring(0, 8);
+				mifareUltraLightC.pagevalue3 = CommonTasks.getHexString(
+						mifare.readPages(((i * 4) + 2))).substring(0, 8);
+				mifareUltraLightC.pagevalue4 = CommonTasks.getHexString(
+						mifare.readPages(((i * 4) + 3))).substring(0, 8);
 				mifareUltraLightC.block1 = (i * 4);
 				mifareUltraLightC.block2 = ((i * 4) + 1);
 				mifareUltraLightC.block3 = ((i * 4) + 2);
@@ -201,20 +200,17 @@ public class NFCHammer {
 		try {
 			mifare = MifareUltralight.get(tag);
 			mifare.connect();
-			mifare.writePage(i,
-					pageData.getBytes("US-ASCII"));
-			
-			
+			mifare.writePage(i, pageData.getBytes("US-ASCII"));
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			Log.d("skm", ex.getMessage());
-			//return false;
+			// return false;
 		} finally {
-			try{
-			mifare.close();
-			}catch(Exception ex){
-			ex.printStackTrace();
+			try {
+				mifare.close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
 		}
 
@@ -248,12 +244,18 @@ public class NFCHammer {
 
 				return false;
 			}
-			mfc.writeBlock(Integer.parseInt(blockNumber), blockdata.getBytes("US-ASCII"));
+			mfc.writeBlock(Integer.parseInt(blockNumber),
+					blockdata.getBytes("US-ASCII"));
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}finally{
-			ReadClassic1kValue(_context, mfc);
+			return false;
+		}
+		try {
+			mfc.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
 		}
 		return true;
 	}

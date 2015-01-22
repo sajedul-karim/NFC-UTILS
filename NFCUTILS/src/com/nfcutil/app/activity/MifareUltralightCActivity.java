@@ -207,6 +207,10 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 			@Override
 			public void onClick(View v) {
 				if(!selectedBlockNumber.equals("Select One")){
+					if(etNFCValue.getText().toString().length()!=4){
+						etNFCValue.setError("Please be add 4 Charecter!!!");
+						return;
+					}
 					alertDialog.dismiss();
 					writeULCValue(etNFCValue.getText().toString(), Integer.parseInt(selectedBlockNumber));
 				}

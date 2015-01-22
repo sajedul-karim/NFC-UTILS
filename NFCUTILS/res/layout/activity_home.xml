@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@android:color/white" >
-    
+    <include 
+        android:id="@+id/incProgressBar"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        layout="@layout/only_progressbar_showing"
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -1,9 +1,6 @@
 package com.nfcutil.app.activity;
 
-import java.nio.charset.Charset;
-
-import org.apache.http.util.EncodingUtils;
-
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,7 +12,9 @@ import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.nfcutils.R;
 import com.nfcutil.app.base.NFCUtilsBase;
@@ -25,7 +24,8 @@ import com.nfcutil.app.util.NFCHammer;
 public class HomeActivity extends NFCUtilsBase {
 	NfcAdapter mAdapter;
 	PendingIntent mPendingIntent;
-	ProgressDialog dialog;
+	ProgressDialog progressDialog;
+	AlertDialog writeAlertDialog ;
 
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -67,10 +67,18 @@ public class HomeActivity extends NFCUtilsBase {
 	}
 
 	@Override
-	protected void onNewIntent(Intent intent) {
+	protected void onNewIntent(final Intent intent) {
+		showProgressDialog();
 		super.onNewIntent(intent);
-		setIntent(intent);
-		resolveIntent(intent);
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {						
+				setIntent(intent);
+				resolveIntent(intent);
+			}
+		},3000);
+		
 	}
 
 	private void resolveIntent(Intent intent) {
@@ -94,9 +102,13 @@ public class HomeActivity extends NFCUtilsBase {
 					// resolveIntentClassic(mfc);
 					boolean result = NFCHammer.ReadClassic1kValue(this, mfc);
 					if(result){
+						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
 						Intent UC1kintent = new Intent(this, MifareClassic1kActivity.class);
 						UC1kintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(UC1kintent);
+					}else{
+						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
+						Toast.makeText(this, "Tap The card again!!!", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				case MifareClassic.TYPE_PLUS:
@@ -112,9 +124,14 @@ public class HomeActivity extends NFCUtilsBase {
 				case MifareUltralight.TYPE_ULTRALIGHT_C:
 					boolean result = NFCHammer.ReadULCValue(this, tag);
 					if(result){
+						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
 						Intent Callintent = new Intent(this, MifareUltralightCActivity.class);
 						Callintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(Callintent);
+					}
+					else{
+						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
+						Toast.makeText(this, "Tap The card again!!!", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				}
@@ -130,5 +147,15 @@ public class HomeActivity extends NFCUtilsBase {
 				NdefFormatable ndefFormatableTag = NdefFormatable.get(tag);
 			}
 		}
+	}
+	
+	public void showProgressDialog(){
+		runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				findViewById(R.id.incProgressBar).setVisibility(View.VISIBLE);
+			}
+		});
 	}
 }
