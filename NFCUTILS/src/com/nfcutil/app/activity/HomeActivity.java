@@ -77,7 +77,7 @@ public class HomeActivity extends NFCUtilsBase {
 				setIntent(intent);
 				resolveIntent(intent);
 			}
-		},3000);
+		},0);
 		
 	}
 
@@ -106,6 +106,8 @@ public class HomeActivity extends NFCUtilsBase {
 						Intent UC1kintent = new Intent(this, MifareClassic1kActivity.class);
 						UC1kintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(UC1kintent);
+						overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+						//overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
 					}else{
 						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
 						Toast.makeText(this, "Tap The card again!!!", Toast.LENGTH_SHORT).show();
@@ -128,6 +130,7 @@ public class HomeActivity extends NFCUtilsBase {
 						Intent Callintent = new Intent(this, MifareUltralightCActivity.class);
 						Callintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(Callintent);
+						overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 					}
 					else{
 						findViewById(R.id.incProgressBar).setVisibility(View.GONE);

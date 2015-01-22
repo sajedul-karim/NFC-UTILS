@@ -9,16 +9,26 @@
         android:id="@+id/text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Reading Tag... \n(Don`t remove the tag)"
-        android:textColor="#000"
+        android:text="Reading Tag..."
+        android:textColor="#39aca2"
         android:textSize="25sp"
         android:textStyle="normal"
         android:gravity="center"/>
+    <TextView 
+        android:id="@+id/text1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Don`t Remove The Tag"
+        android:textColor="#c61c00"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:layout_below="@id/text"/>
     <ProgressBar 
         android:id="@+id/pbWaitForCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text"
+        android:layout_below="@id/text1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"/>
     

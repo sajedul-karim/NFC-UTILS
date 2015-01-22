@@ -44,17 +44,6 @@ public class NFCHammer {
 				mifareUltraLightC.Header = "Page " + (i * 4) + " to "
 						+ (((i + 1) * 4) - 1);
 
-				/*
-				 * mifareUltraLightC.pagevalue1 = new String(mifare .readPages(i
-				 * * 4),Charset.forName("US-ASCII"));
-				 * mifareUltraLightC.pagevalue2 = new String(mifare
-				 * .readPages(((i * 4) + 1)),Charset.forName("US-ASCII"));
-				 * mifareUltraLightC.pagevalue3 = new String(mifare
-				 * .readPages(((i * 4) + 2)),Charset.forName("US-ASCII"));
-				 * mifareUltraLightC.pagevalue4 = new String(mifare
-				 * .readPages(((i * 4) + 3)),Charset.forName("US-ASCII"));
-				 */
-
 				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(
 						mifare.readPages(i * 4)).substring(0, 8);
 				mifareUltraLightC.pagevalue2 = CommonTasks.getHexString(
@@ -86,8 +75,8 @@ public class NFCHammer {
 		if (CommonValues.getInstance().mifareUltraLightCList.size() == 11) {
 			return true;
 		} else {
-			Toast.makeText(context, "Please Hold your card again!",
-					Toast.LENGTH_LONG).show();
+			/*Toast.makeText(context, "Please Hold your card again!",
+					Toast.LENGTH_LONG).show();*/
 			return false;
 		}
 	}
@@ -187,8 +176,8 @@ public class NFCHammer {
 		if (CommonValues.getInstance().mifareClassic1kList.size() == 16) {
 			return true;
 		} else {
-			Toast.makeText(context, "Please Hold your card again!",
-					Toast.LENGTH_LONG).show();
+			/*Toast.makeText(context, "Please Hold your card again!",
+					Toast.LENGTH_LONG).show();*/
 			return false;
 		}
 	}
