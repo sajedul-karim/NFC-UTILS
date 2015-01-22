@@ -6,6 +6,7 @@ import java.util.List;
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,13 +61,23 @@ public class MifareUltraLightCAdapter extends SectionedBaseAdapter {
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				ultralightCView = inflater.inflate(
-						R.layout.classic_1k_individual_item, null);
+						R.layout.ultralight_c_individual_item, null);
 			}
 			TextView tvPage1 = (TextView) ultralightCView.findViewById(R.id.tvPage1);
 			TextView tvPage2 = (TextView) ultralightCView.findViewById(R.id.tvPage2);
 			TextView tvPage3 = (TextView) ultralightCView.findViewById(R.id.tvPage3);
 			TextView tvPage4 = (TextView) ultralightCView.findViewById(R.id.tvPage4);
-			
+			if(ultraLightC.Header.equals("Page 0 to 3") || ultraLightC.Header.equals("Page 40 to 43")){
+				tvPage1.setTextColor(Color.RED);
+				tvPage2.setTextColor(Color.RED);
+				tvPage3.setTextColor(Color.RED);
+				tvPage4.setTextColor(Color.RED);
+			}else{
+				tvPage1.setTextColor(Color.BLACK);
+				tvPage2.setTextColor(Color.BLACK);
+				tvPage3.setTextColor(Color.BLACK);
+				tvPage4.setTextColor(Color.BLACK);
+			}
 			tvPage1.setText(ultraLightC.pagevalue1);
 			tvPage2.setText(ultraLightC.pagevalue2);
 			tvPage3.setText(ultraLightC.pagevalue3);

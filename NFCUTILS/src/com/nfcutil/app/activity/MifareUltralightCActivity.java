@@ -82,6 +82,10 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 		try{
+			mifareUltraLightC = (MifareUltraLightC) view.getTag();
+			if(mifareUltraLightC.Header.equals("Page 0 to 3") || mifareUltraLightC.Header.equals("Page 40 to 43")){
+				return;
+			}
 			if((position%2) != 0){
 				mifareUltraLightC = (MifareUltraLightC) view.getTag();
 				showValue(mifareUltraLightC);

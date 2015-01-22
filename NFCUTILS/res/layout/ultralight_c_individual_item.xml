@@ -14,8 +14,10 @@
             android:id="@+id/tvPage1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="15sp"
+            android:textStyle="normal"
             android:text=""
             android:textColor="#000" />
 
@@ -23,27 +25,33 @@
             android:id="@+id/tvPage2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text=""
+            android:textSize="15sp"
+            android:textStyle="normal"
             android:textColor="#000" />
 
         <TextView
             android:id="@+id/tvPage3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text=""
+            android:textSize="15sp"
+            android:textStyle="normal"
             android:textColor="#000" />
 
         <TextView
             android:id="@+id/tvPage4"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text=""
+            android:textSize="15sp"
+            android:textStyle="normal"
             android:textColor="#000" />
     </LinearLayout>
 
