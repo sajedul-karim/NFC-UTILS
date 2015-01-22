@@ -40,11 +40,12 @@
         <TextView
             android:id="@+id/tvPage4"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+		    android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:text=""
-            android:textColor="#000" />
+			android:textStyle="bold"
+            android:textColor="#F00" />
     </LinearLayout>
 
 </LinearLayout>
