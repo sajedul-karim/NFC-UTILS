@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
@@ -110,7 +111,8 @@ public class HomeActivity extends NFCUtilsBase {
 						//overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
 					}else{
 						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
-						Toast.makeText(this, "Tap The card again!!!", Toast.LENGTH_SHORT).show();
+						CommonTask.createToast("Tap The card again!!!", this, Color.RED);
+						//Toast.makeText(this, "Tap The card again!!!", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				case MifareClassic.TYPE_PLUS:
@@ -134,7 +136,7 @@ public class HomeActivity extends NFCUtilsBase {
 					}
 					else{
 						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
-						Toast.makeText(this, "Tap The card again!!!", Toast.LENGTH_SHORT).show();
+						CommonTask.createToast("Tap The card again!!!", this, Color.RED);
 					}
 					break;
 				}

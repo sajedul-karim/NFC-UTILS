@@ -37,6 +37,7 @@
 
     <style name="ActionBarTabStyle.Example" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_example</item>
+        <item name="android:height">@dimen/action_bar_default_height</item>
     </style>
 
     <style name="DropDownNav.Example" parent="@android:style/Widget.Holo.Light.Spinner">
