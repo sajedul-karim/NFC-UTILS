@@ -1,6 +1,7 @@
 package com.nfcutil.app.util;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import com.nfcutil.app.activity.MifareClassic1kActivity;
 import com.nfcutil.app.activity.MifareUltralightCActivity;
@@ -42,6 +43,19 @@ public class NFCHammer {
 				mifareUltraLightC = new MifareUltraLightC();
 				mifareUltraLightC.Header = "Page " + (i * 4) + " to "
 						+ (((i + 1) * 4) - 1);
+				
+				
+				
+				/*mifareUltraLightC.pagevalue1 = new String(mifare
+						.readPages(i * 4),Charset.forName("US-ASCII"));
+				mifareUltraLightC.pagevalue2 = new String(mifare
+						.readPages(((i * 4) + 1)),Charset.forName("US-ASCII"));
+				mifareUltraLightC.pagevalue3 = new String(mifare
+						.readPages(((i * 4) + 2)),Charset.forName("US-ASCII"));
+				mifareUltraLightC.pagevalue4 = new String(mifare
+						.readPages(((i * 4) + 3)),Charset.forName("US-ASCII"));	*/		
+				
+				
 				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(mifare
 						.readPages(i * 4));
 				mifareUltraLightC.pagevalue2 = CommonTasks.getHexString(mifare
