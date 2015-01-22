@@ -57,13 +57,13 @@ public class NFCHammer {
 				
 				
 				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(mifare
-						.readPages(i * 4));
+						.readPages(i * 4)).substring(0, 8);
 				mifareUltraLightC.pagevalue2 = CommonTasks.getHexString(mifare
-						.readPages(((i * 4) + 1)));
+						.readPages(((i * 4) + 1))).substring(0, 8);
 				mifareUltraLightC.pagevalue3 = CommonTasks.getHexString(mifare
-						.readPages(((i * 4) + 2)));
+						.readPages(((i * 4) + 2))).substring(0, 8);
 				mifareUltraLightC.pagevalue4 = CommonTasks.getHexString(mifare
-						.readPages(((i * 4) + 3)));
+						.readPages(((i * 4) + 3))).substring(0, 8);
 				mifareUltraLightC.block1 = (i * 4);
 				mifareUltraLightC.block2 = ((i * 4) + 1);
 				mifareUltraLightC.block3 = ((i * 4) + 2);
@@ -203,6 +203,8 @@ public class NFCHammer {
 			mifare.connect();
 			mifare.writePage(i,
 					pageData.getBytes("US-ASCII"));
+			
+			
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

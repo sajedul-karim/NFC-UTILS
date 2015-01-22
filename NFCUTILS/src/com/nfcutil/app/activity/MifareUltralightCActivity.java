@@ -1,14 +1,11 @@
 package com.nfcutil.app.activity;
 
-import org.apache.http.util.EncodingUtils;
-
 import za.co.immedia.pinnedheaderlistview.PinnedHeaderListView;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -16,7 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
@@ -24,16 +20,17 @@ import com.example.nfcutils.R;
 import com.nfcutil.app.adapters.MifareUltraLightCAdapter;
 import com.nfcutil.app.base.NFCUtilsBase;
 import com.nfcutil.app.entity.MifareUltraLightC;
+import com.nfcutil.app.util.CommonTask;
 import com.nfcutil.app.util.CommonValues;
 
-public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemClickListener {
+public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemClickListener{
 	TextView tvUID, tvType, tvMemory, tvPage, tvBlock, value1, value2, value3, value4;
 	PinnedHeaderListView lvMifareUltralLightC;
 	MifareUltraLightCAdapter adapter;
 	MifareUltraLightC mifareUltraLightC;
 	LinearLayout llViewOfValue, llEditOfValue;
 	EditText etNFCValue;
-	RelativeLayout rlCancel, rlOK;
+	RelativeLayout rlCancel, rlOK, rlshowvalue;
 	Spinner spBlockNumber, spShowBlockValue;
 	
 	@Override
@@ -109,11 +106,14 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 		etNFCValue = (EditText) dialogView.findViewById(R.id.etNFCValue);
 		rlCancel = (RelativeLayout) dialogView.findViewById(R.id.rlCancel);
 		rlOK = (RelativeLayout) dialogView.findViewById(R.id.rlOK);
+		rlshowvalue = (RelativeLayout) dialogView.findViewById(R.id.rlshowvalue);
 		String[] valueOfULC = {"Select One",String.valueOf(_mifareUltraLightC.block1),String.valueOf(_mifareUltraLightC.block2),String.valueOf(_mifareUltraLightC.block3),String.valueOf(_mifareUltraLightC.block4)};
 		String[] convertOfULCValue = {"Hex Value","Asci Value"};
 		spBlockNumber.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, valueOfULC));
 		spShowBlockValue.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, convertOfULCValue));
 		
+		/*rlOK.setOnClickListener(this);
+		rlCancel.setOnClickListener(this);*/
 		llViewOfValue.setVisibility(View.VISIBLE);
 		llEditOfValue.setVisibility(View.GONE);
 		
@@ -134,10 +134,11 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 					value3.setText(_mifareUltraLightC.pagevalue3);
 					value4.setText(_mifareUltraLightC.pagevalue4);
 				}else{
-					value1.setText(EncodingUtils.getAsciiString(_mifareUltraLightC.pagevalue1.getBytes()));
-					value2.setText(EncodingUtils.getAsciiString(_mifareUltraLightC.pagevalue2.getBytes()));
-					value3.setText(EncodingUtils.getAsciiString(_mifareUltraLightC.pagevalue3.getBytes()));
-					value4.setText(EncodingUtils.getAsciiString(_mifareUltraLightC.pagevalue4.getBytes()));
+					value1.setText(CommonTask.hexToAscii((_mifareUltraLightC.pagevalue1)));
+					value2.setText(CommonTask.hexToAscii((_mifareUltraLightC.pagevalue2)));
+					value3.setText(CommonTask.hexToAscii((_mifareUltraLightC.pagevalue3)));
+					value4.setText(CommonTask.hexToAscii((_mifareUltraLightC.pagevalue4)));
+					
 				}
 			}
 
@@ -156,22 +157,21 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 				if(!value.equals("Select One") && position != 0){
 					llViewOfValue.setVisibility(View.GONE);
 					llEditOfValue.setVisibility(View.VISIBLE);
-					spShowBlockValue.setSelected(false);
+					rlshowvalue.setVisibility(View.GONE);
 					if(position == 1){
-						etNFCValue.setText(_mifareUltraLightC.pagevalue1);
+						etNFCValue.setText(CommonTask.hexToAscii(_mifareUltraLightC.pagevalue1));
 					}else if(position == 2){
-						etNFCValue.setText(_mifareUltraLightC.pagevalue2);
+						etNFCValue.setText(CommonTask.hexToAscii(_mifareUltraLightC.pagevalue2));
 					}else if(position == 3){
-						etNFCValue.setText(_mifareUltraLightC.pagevalue3);
+						etNFCValue.setText(CommonTask.hexToAscii(_mifareUltraLightC.pagevalue3));
 					}else if(position == 4){
-						etNFCValue.setText(_mifareUltraLightC.pagevalue4);
+						etNFCValue.setText(CommonTask.hexToAscii(_mifareUltraLightC.pagevalue4));
 					}
 				}else{
 					llViewOfValue.setVisibility(View.VISIBLE);
 					llEditOfValue.setVisibility(View.GONE);
-					spShowBlockValue.setSelected(true);
+					rlshowvalue.setVisibility(View.VISIBLE);
 				}
-				//Toast.makeText(getApplicationContext(), "Value is: " + value +" and position is : " + position, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
@@ -185,4 +185,6 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 		alertDialog.show();
 		
 	}
+
+	
 }

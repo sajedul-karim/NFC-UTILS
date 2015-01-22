@@ -1,5 +1,9 @@
 package com.nfcutil.app.activity;
 
+import java.nio.charset.Charset;
+
+import org.apache.http.util.EncodingUtils;
+
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,6 +15,8 @@ import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.example.nfcutils.R;
 import com.nfcutil.app.base.NFCUtilsBase;
 import com.nfcutil.app.util.CommonTask;
@@ -49,7 +55,8 @@ public class HomeActivity extends NFCUtilsBase {
 	}
 
 	private void Initialization() {
-		mAdapter = NfcAdapter.getDefaultAdapter(this);
+		mAdapter = NfcAdapter.getDefaultAdapter(this);		
+		
 		if (mAdapter == null) {
 			CommonTask.showMessage(this, R.string.error, R.string.no_nfc);
 			// finish();
