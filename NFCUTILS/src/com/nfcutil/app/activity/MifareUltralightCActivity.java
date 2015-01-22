@@ -100,7 +100,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	}
 	
 	private void setListValue(){
-		adapter = new MifareUltraLightCAdapter(this, R.layout.classic_1k_individual_item, CommonValues.getInstance().mifareUltraLightCList);
+		adapter = new MifareUltraLightCAdapter(this, R.layout.ultralight_c_individual_item, CommonValues.getInstance().mifareUltraLightCList);
 		lvMifareUltralLightC.setAdapter(adapter);
 	}
 	
@@ -290,7 +290,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 					if(result){
 						result = NFCHammer.ReadULCValue(this, tag);
 						if(result){
-							adapter = new MifareUltraLightCAdapter(this, R.layout.classic_1k_individual_item, CommonValues.getInstance().mifareUltraLightCList);
+							adapter = new MifareUltraLightCAdapter(this, R.layout.ultralight_c_individual_item, CommonValues.getInstance().mifareUltraLightCList);
 							writeAlertDialog.dismiss();
 							
 							adapter.notifyDataSetChanged();
