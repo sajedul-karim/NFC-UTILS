@@ -17,8 +17,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class NFCHammer {
-	
-	public static boolean ReadULCValue(Context context, Tag t){
+
+	public static boolean ReadULCValue(Context context, Tag t) {
 		CommonValues.getInstance().mifareUltraLightCList.clear();
 		Log.d("skm",
 				"===========Mifare Ultralight C Read Start==================");
@@ -27,15 +27,16 @@ public class NFCHammer {
 		MifareUltraLightC mifareUltraLightC;
 		MifareUltralight mifare = MifareUltralight.get(tag);
 		Log.d("skm", "Tag Type :" + mifare.getType());
-		CommonValues.getInstance().Type=""+mifare.getType();
+		CommonValues.getInstance().Type = "" + mifare.getType();
 		try {
 			tagId = CommonTasks.getHexString(tag.getId());
 			Log.d("skm", "UID :" + tagId.trim());
-			CommonValues.getInstance().Name="Mifare UltraLight C";
-			CommonValues.getInstance().UID=tagId;
-			CommonValues.getInstance().Memory="192 bytes";
-			CommonValues.getInstance().ultraLightCPageSize=""+mifare.PAGE_SIZE;
-			CommonValues.getInstance().ultraLightCPageCount="44";
+			CommonValues.getInstance().Name = "Mifare UltraLight C";
+			CommonValues.getInstance().UID = tagId;
+			CommonValues.getInstance().Memory = "192 bytes";
+			CommonValues.getInstance().ultraLightCPageSize = ""
+					+ mifare.PAGE_SIZE;
+			CommonValues.getInstance().ultraLightCPageCount = "44";
 			mifare.connect();
 			for (int i = 0; i < 11; i++) {
 				mifareUltraLightC = new MifareUltraLightC();
@@ -50,12 +51,12 @@ public class NFCHammer {
 				mifareUltraLightC.pagevalue4 = CommonTasks.getHexString(mifare
 						.readPages(((i * 4) + 3)));
 				mifareUltraLightC.block1 = (i * 4);
-				mifareUltraLightC.block2 = ((i * 4)+1);
-				mifareUltraLightC.block3 = ((i * 4)+2);
-				mifareUltraLightC.block4 = ((i * 4)+3);
+				mifareUltraLightC.block2 = ((i * 4) + 1);
+				mifareUltraLightC.block3 = ((i * 4) + 2);
+				mifareUltraLightC.block4 = ((i * 4) + 3);
 				CommonValues.getInstance().mifareUltraLightCList
 						.add(mifareUltraLightC);
-			
+
 			}
 
 		} catch (IOException e) {
@@ -71,13 +72,14 @@ public class NFCHammer {
 		}
 		if (CommonValues.getInstance().mifareUltraLightCList.size() == 11) {
 			return true;
-		}else{
-			Toast.makeText(context, "Please Hold your card again!", Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(context, "Please Hold your card again!",
+					Toast.LENGTH_LONG).show();
 			return false;
 		}
 	}
-	
-	public static boolean ReadClassic1kValue(Context context, MifareClassic _mfc){
+
+	public static boolean ReadClassic1kValue(Context context, MifareClassic _mfc) {
 		CommonValues.getInstance().mifareClassic1kList.clear();
 		MifareClassic mfc = _mfc;
 		MifareClassic1k classic1k;
@@ -85,18 +87,19 @@ public class NFCHammer {
 			mfc.connect();
 
 			Log.d("skm", "== MifareClassic Info == ");
-			CommonValues.getInstance().Name="Mifare Classic 1K";
+			CommonValues.getInstance().Name = "Mifare Classic 1K";
 			Log.d("skm", "Size: " + mfc.getSize());
-			CommonValues.getInstance().Memory=""+mfc.getSize();
+			CommonValues.getInstance().Memory = "" + mfc.getSize();
 			Log.d("skm", "Type: " + mfc.getType());
-			CommonValues.getInstance().Type=""+mfc.getType();
+			CommonValues.getInstance().Type = "" + mfc.getType();
 			Log.d("skm", "BlockCount: " + mfc.getBlockCount());
-			CommonValues.getInstance().Block=""+mfc.getBlockCount();
+			CommonValues.getInstance().Block = "" + mfc.getBlockCount();
 
 			Log.d("skm", "MaxTransceiveLength: " + mfc.getMaxTransceiveLength());
 			Log.d("skm", "SectorCount: " + mfc.getSectorCount());
-			CommonValues.getInstance().Sector=""+mfc.getSectorCount();
-			CommonValues.getInstance().UID=CommonTasks.getHexString(mfc.getTag().getId());
+			CommonValues.getInstance().Sector = "" + mfc.getSectorCount();
+			CommonValues.getInstance().UID = CommonTasks.getHexString(mfc
+					.getTag().getId());
 
 			Log.d("skm", "Reading sectors...");
 
@@ -125,7 +128,6 @@ public class NFCHammer {
 					continue;
 				}
 
-
 				for (int k = 0; k < mfc.getBlockCountInSector(i); ++k) {
 					int block = mfc.sectorToBlock(i) + k;
 					byte[] data = null;
@@ -141,22 +143,22 @@ public class NFCHammer {
 					String blockData = CommonTasks.getHexString(data);
 
 					switch (k) {
-						case 0:
-							classic1k.Block1Value = blockData;
-							classic1k.block1 = (i*4)+k;
-							break;
-						case 1:
-							classic1k.Block2Value = blockData;
-							classic1k.block2 = (i*4)+k;
-							break;
-						case 2:
-							classic1k.Block3Value = blockData;
-							classic1k.block3 = (i*4)+k;
-							break;
-						case 3:
-							classic1k.Block4Value = blockData;
-							classic1k.block4 = (i*4)+k;
-							break;
+					case 0:
+						classic1k.Block1Value = blockData;
+						classic1k.block1 = (i * 4) + k;
+						break;
+					case 1:
+						classic1k.Block2Value = blockData;
+						classic1k.block2 = (i * 4) + k;
+						break;
+					case 2:
+						classic1k.Block3Value = blockData;
+						classic1k.block3 = (i * 4) + k;
+						break;
+					case 3:
+						classic1k.Block4Value = blockData;
+						classic1k.block4 = (i * 4) + k;
+						break;
 
 					}
 					Log.d("skm", "Block " + block + " data: " + blockData);
@@ -168,12 +170,76 @@ public class NFCHammer {
 			exception.printStackTrace();
 
 		}
-		
-		if(CommonValues.getInstance().mifareClassic1kList.size()==16){
+
+		if (CommonValues.getInstance().mifareClassic1kList.size() == 16) {
 			return true;
-		}else{
-			Toast.makeText(context, "Please Hold your card again!", Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(context, "Please Hold your card again!",
+					Toast.LENGTH_LONG).show();
 			return false;
 		}
 	}
+
+	public static boolean writeOnMifareUltralightC(Context _context, Tag tag,
+			String pageData, int i) {
+		MifareUltralight mifare = null;
+
+		try {
+			mifare = MifareUltralight.get(tag);
+			mifare.connect();
+			mifare.writePage(i,
+					pageData.getBytes("US-ASCII"));
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			Log.d("skm", ex.getMessage());
+			//return false;
+		} finally {
+			try{
+			mifare.close();
+			}catch(Exception ex){
+			ex.printStackTrace();
+			}
+		}
+
+		return true;
+	}
+
+	public static boolean writeOnClassic1K(Context _context, Tag tag,
+			String blockdata, String sectorNumber, String blockNumber) {
+		MifareClassic mfc = MifareClassic.get(tag);
+
+		try {
+			mfc.connect();
+
+			if (mfc.authenticateSectorWithKeyA(Integer.parseInt(sectorNumber),
+					MifareClassic.KEY_MIFARE_APPLICATION_DIRECTORY)) {
+				Log.d("skm", "Authorized sector with MAD key");
+
+			} else if (mfc.authenticateSectorWithKeyA(
+					Integer.parseInt(sectorNumber), MifareClassic.KEY_DEFAULT)) {
+				Log.d("skm",
+						"Authorization granted to sector  with DEFAULT key");
+
+			} else if (mfc
+					.authenticateSectorWithKeyA(Integer.parseInt(sectorNumber),
+							MifareClassic.KEY_NFC_FORUM)) {
+				Log.d("skm",
+						"Authorization granted to sector with NFC_FORUM key");
+
+			} else {
+				Log.d("skm", "Authorization denied ");
+
+				return false;
+			}
+			mfc.writeBlock(Integer.parseInt(blockNumber), blockdata.getBytes("US-ASCII"));
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}finally{
+			ReadClassic1kValue(_context, mfc);
+		}
+		return true;
+	}
+
 }
