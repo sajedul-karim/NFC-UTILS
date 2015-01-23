@@ -112,19 +112,30 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClick
 		rlCancel = (RelativeLayout) dialogView.findViewById(R.id.rlCancel);
 		rlOK = (RelativeLayout) dialogView.findViewById(R.id.rlOK);
 		rlshowvalue = (RelativeLayout) dialogView.findViewById(R.id.rlshowvalue);
-		String[] valueOfULC = {"Select One",String.valueOf(_mifareClassic1k.block1),String.valueOf(_mifareClassic1k.block2),String.valueOf(_mifareClassic1k.block3)};
+		
+		if(_mifareClassic1k.Header==0){
+			String[] valueOfULC = {"Select One",String.valueOf(_mifareClassic1k.block2),String.valueOf(_mifareClassic1k.block3)};
+			spBlockNumber.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, valueOfULC));
+		}else{
+			String[] valueOfULC = {"Select One",String.valueOf(_mifareClassic1k.block1),String.valueOf(_mifareClassic1k.block2),String.valueOf(_mifareClassic1k.block3)};
+			spBlockNumber.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, valueOfULC));
+		}
+		
 		String[] convertOfULCValue = {"Hex Value","Asci Value"};
-		spBlockNumber.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, valueOfULC));
 		spShowBlockValue.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, convertOfULCValue));
 		
 		
 		llViewOfValue.setVisibility(View.VISIBLE);
 		llEditOfValue.setVisibility(View.GONE);
 		
-		value1.setText(_mifareClassic1k.Block1Value);
-		value2.setText(_mifareClassic1k.Block2Value);
-		value3.setText(_mifareClassic1k.Block3Value);
-		//value4.setText(_mifareClassic1k.Block4Value);
+		if(_mifareClassic1k.Header!=0){
+			value1.setText(_mifareClassic1k.Block1Value);
+			value2.setText(_mifareClassic1k.Block2Value);
+			value3.setText(_mifareClassic1k.Block3Value);
+		}else{
+			value2.setText(_mifareClassic1k.Block2Value);
+			value3.setText(_mifareClassic1k.Block3Value);
+		}
 		
 		spShowBlockValue.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -133,17 +144,24 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClick
 					int position, long id) {
 				String value = (String) spShowBlockValue.getItemAtPosition(position);
 				if(value.equals("Hex Value")){
-					value1.setText(_mifareClassic1k.Block1Value);
-					value2.setText(_mifareClassic1k.Block2Value);
-					value3.setText(_mifareClassic1k.Block3Value);
-					//value4.setText(_mifareClassic1k.Block4Value);
+					if(_mifareClassic1k.Header!=0){
+						value1.setText(_mifareClassic1k.Block1Value);
+						value2.setText(_mifareClassic1k.Block2Value);
+						value3.setText(_mifareClassic1k.Block3Value);
+					}else{
+						value2.setText(_mifareClassic1k.Block2Value);
+						value3.setText(_mifareClassic1k.Block3Value);
+					}
 					
 				}else{
-					value1.setText(CommonTask.hexToAscii((_mifareClassic1k.Block1Value)));
-					value2.setText(CommonTask.hexToAscii((_mifareClassic1k.Block2Value)));
-					value3.setText(CommonTask.hexToAscii((_mifareClassic1k.Block3Value)));
-					//value4.setText(CommonTask.hexToAscii((_mifareClassic1k.Block4Value)));
-					
+					if(_mifareClassic1k.Header!=0){
+						value1.setText(CommonTask.hexToAscii((_mifareClassic1k.Block1Value)));
+						value2.setText(CommonTask.hexToAscii((_mifareClassic1k.Block2Value)));
+						value3.setText(CommonTask.hexToAscii((_mifareClassic1k.Block3Value)));
+					}else{
+						value2.setText(CommonTask.hexToAscii((_mifareClassic1k.Block2Value)));
+						value3.setText(CommonTask.hexToAscii((_mifareClassic1k.Block3Value)));
+					}
 				}
 			}
 
@@ -163,15 +181,22 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClick
 					llViewOfValue.setVisibility(View.GONE);
 					llEditOfValue.setVisibility(View.VISIBLE);
 					rlshowvalue.setVisibility(View.GONE);
-					if(position == 1){
-						etNFCValue.setText(_mifareClassic1k.Block1Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block1Value));
-					}else if(position == 2){
-						etNFCValue.setText(_mifareClassic1k.Block2Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block2Value));
-					}else if(position == 3){
-						etNFCValue.setText(_mifareClassic1k.Block3Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block3Value));
-					}else if(position == 4){
-						etNFCValue.setText(_mifareClassic1k.Block4Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block4Value));
+					if(_mifareClassic1k.Header == 0){
+						if((position+1) == 2){
+							etNFCValue.setText(_mifareClassic1k.Block2Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block2Value));
+						}else if((position+1) == 3){
+							etNFCValue.setText(_mifareClassic1k.Block3Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block3Value));
+						}
+					}else{
+						if(position == 1){
+							etNFCValue.setText(_mifareClassic1k.Block1Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block1Value));
+						}else if(position == 2){
+							etNFCValue.setText(_mifareClassic1k.Block2Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block2Value));
+						}else if(position == 3){
+							etNFCValue.setText(_mifareClassic1k.Block3Value.equals("00000000000000000000000000000000")?"":CommonTask.hexToAscii(_mifareClassic1k.Block3Value));
+						}
 					}
+					
 					
 				}else{
 					llViewOfValue.setVisibility(View.VISIBLE);

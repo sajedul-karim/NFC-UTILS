@@ -7,7 +7,6 @@ import com.nfcutil.app.activity.MifareClassic1kActivity;
 import com.nfcutil.app.activity.MifareUltralightCActivity;
 import com.nfcutil.app.entity.MifareClassic1k;
 import com.nfcutil.app.entity.MifareUltraLightC;
-import com.skarim.app.utils.CommonTasks;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +29,7 @@ public class NFCHammer {
 		Log.d("skm", "Tag Type :" + mifare.getType());
 		CommonValues.getInstance().Type = "" + mifare.getType();
 		try {
-			tagId = CommonTasks.getHexString(tag.getId());
+			tagId = CommonTask.getHexString(tag.getId());
 			Log.d("skm", "UID :" + tagId.trim());
 			CommonValues.getInstance().Name = "Mifare UltraLight C";
 			CommonValues.getInstance().UID = tagId;
@@ -44,13 +43,13 @@ public class NFCHammer {
 				mifareUltraLightC.Header = "Page " + (i * 4) + " to "
 						+ (((i + 1) * 4) - 1);
 
-				mifareUltraLightC.pagevalue1 = CommonTasks.getHexString(
+				mifareUltraLightC.pagevalue1 = CommonTask.getHexString(
 						mifare.readPages(i * 4)).substring(0, 8);
-				mifareUltraLightC.pagevalue2 = CommonTasks.getHexString(
+				mifareUltraLightC.pagevalue2 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 1))).substring(0, 8);
-				mifareUltraLightC.pagevalue3 = CommonTasks.getHexString(
+				mifareUltraLightC.pagevalue3 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 2))).substring(0, 8);
-				mifareUltraLightC.pagevalue4 = CommonTasks.getHexString(
+				mifareUltraLightC.pagevalue4 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 3))).substring(0, 8);
 				mifareUltraLightC.block1 = (i * 4);
 				mifareUltraLightC.block2 = ((i * 4) + 1);
@@ -100,7 +99,7 @@ public class NFCHammer {
 			Log.d("skm", "MaxTransceiveLength: " + mfc.getMaxTransceiveLength());
 			Log.d("skm", "SectorCount: " + mfc.getSectorCount());
 			CommonValues.getInstance().Sector = "" + mfc.getSectorCount();
-			CommonValues.getInstance().UID = CommonTasks.getHexString(mfc
+			CommonValues.getInstance().UID = CommonTask.getHexString(mfc
 					.getTag().getId());
 
 			Log.d("skm", "Reading sectors...");
@@ -142,7 +141,7 @@ public class NFCHammer {
 								"Block " + block + " data: " + e.getMessage());
 						continue;
 					}
-					String blockData = CommonTasks.getHexString(data);
+					String blockData = CommonTask.getHexString(data);
 
 					switch (k) {
 					case 0:

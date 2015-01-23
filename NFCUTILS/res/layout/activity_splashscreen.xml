@@ -5,8 +5,9 @@
     android:orientation="vertical"
     android:background="#DADADA"
     android:gravity="center" >
-	<ImageView 
+	<ImageView
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:src="@drawable/nfc_splash_icon"/>
+	    android:src="@drawable/nfc_splash_icon"
+	    android:contentDescription="@string/app_name"/>
 </LinearLayout>
