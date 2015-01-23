@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareUltralight;
@@ -84,6 +85,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 		try{
 			mifareUltraLightC = (MifareUltraLightC) view.getTag();
 			if(mifareUltraLightC.Header.equals("Page 0 to 3") || mifareUltraLightC.Header.equals("Page 40 to 43")){
+				CommonTask.createToast("This is manufacturer area. You cannot Edit.", this, Color.RED);
 				return;
 			}
 			if((position%2) != 0){
@@ -110,7 +112,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	
 	private void showValue(final MifareUltraLightC _mifareUltraLightC){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
-		builder.setTitle("NFC Write");
+		builder.setTitle("NFC Write "+_mifareUltraLightC.Header);
 		LayoutInflater inflater = this.getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.nfc_write_dialog, null);
 		builder.setView(dialogView);

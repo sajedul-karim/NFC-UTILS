@@ -93,7 +93,7 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements OnItemClick
 	private void showValue(final MifareClassic1k _mifareClassic1k) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
-		builder.setTitle("NFC Write");
+		builder.setTitle("NFC Write Sector #"+_mifareClassic1k.Header);
 		LayoutInflater inflater = this.getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.write_1k_card, null);
 		builder.setView(dialogView);
