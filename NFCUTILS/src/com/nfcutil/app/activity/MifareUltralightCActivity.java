@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareUltralight;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,9 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	PendingIntent mPendingIntent;
 	Tag tag;
 	AlertDialog writeAlertDialog ;
+	AlertDialog.Builder writeBuilder;
 	ImageView iv_info;
+	boolean isWriteDone = false;
 	
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -65,9 +68,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (mAdapter != null) {
-			mAdapter.disableForegroundDispatch(this);
-		}
+		
 	}
 
 	private void Initalization() {
@@ -234,7 +235,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 
 	private void writeULCValue(String value, int blocknumber){
 		try{
-			AlertDialog.Builder writeBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+			writeBuilder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
 			writeBuilder.setTitle("NFC Write");
 			writeBuilder.setMessage("Please Tap the card!!!");
 			writeBuilder.setCancelable(false);
@@ -272,6 +273,8 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
+		NFCDispatchDisable disable = new NFCDispatchDisable();
+		disable.execute();
 		super.onNewIntent(intent);
 		setIntent(intent);
 		resolveIntent(intent);
@@ -301,9 +304,9 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 						result = NFCHammer.ReadULCValue(this, tag);
 						if(result){
 							adapter = new MifareUltraLightCAdapter(this, R.layout.ultralight_c_individual_item, CommonValues.getInstance().mifareUltraLightCList);
-							writeAlertDialog.dismiss();
-							
 							adapter.notifyDataSetChanged();
+							writeAlertDialog.dismiss();
+							isWriteDone = true;
 						}
 					}
 					break;
@@ -323,6 +326,25 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setView(dialoglayout);
 			builder.show();
+		}
+		
+	}
+	
+	public class NFCDispatchDisable extends AsyncTask<Void, Void, Void>{
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			while(true){
+				if(isWriteDone){
+					if (mAdapter != null) {
+						mAdapter.disableForegroundDispatch(MifareUltralightCActivity.this);
+					}
+					isWriteDone = false;
+					break;
+				}
+			}
+			
+			return null;
 		}
 		
 	}

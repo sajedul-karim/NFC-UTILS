@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements
 	Tag tag;
 	AlertDialog writeAlertDialog;
 	ImageView iv_info;
+	boolean isWriteDone = false;
 
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -338,6 +340,8 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements
 
 	@Override
 	protected void onNewIntent(Intent intent) {
+		NFCDispatchDisable disable = new NFCDispatchDisable();
+		disable.execute();
 		super.onNewIntent(intent);
 		setIntent(intent);
 		resolveIntent(intent);
@@ -373,6 +377,7 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements
 									CommonValues.getInstance().mifareClassic1kList);
 							writeAlertDialog.dismiss();
 							adapter.notifyDataSetChanged();
+							isWriteDone = true;
 						}
 					}
 					break;
@@ -398,5 +403,24 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements
 			builder.show();
 		}
 
+	}
+	
+	public class NFCDispatchDisable extends AsyncTask<Void, Void, Void>{
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			while(true){
+				if(isWriteDone){
+					if (mAdapter != null) {
+						mAdapter.disableForegroundDispatch(MifareClassic1kActivity.this);
+					}
+					isWriteDone = false;
+					break;
+				}
+			}
+			
+			return null;
+		}
+		
 	}
 }
