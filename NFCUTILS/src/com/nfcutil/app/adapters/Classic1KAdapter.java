@@ -9,6 +9,8 @@ import com.example.nfcutils.R;
 import com.nfcutil.app.entity.MifareClassic1k;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,10 @@ public class Classic1KAdapter extends SectionedBaseAdapter {
 	ArrayList<MifareClassic1k> list = null;
 	MifareClassic1k classic1k;
 	Context context;
+	
+	
+	
+	/////kewfhwwkfrhwqkjrwqkjrgwqjgrjwgrjg
 
 	public Classic1KAdapter(Context _context, 
 			int textViewResourceId, List<MifareClassic1k> objects) {
@@ -52,7 +58,7 @@ public class Classic1KAdapter extends SectionedBaseAdapter {
 		View mifareClassic1kView = convertView;
 
 		try {
-			classic1k = list.get(position);
+			classic1k = list.get(section);
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -63,6 +69,14 @@ public class Classic1KAdapter extends SectionedBaseAdapter {
 			TextView tvPage2 = (TextView) mifareClassic1kView.findViewById(R.id.tvPage2);
 			TextView tvPage3 = (TextView) mifareClassic1kView.findViewById(R.id.tvPage3);
 			TextView tvPage4 = (TextView) mifareClassic1kView.findViewById(R.id.tvPage4);
+			
+			if(classic1k.Header==0){
+				tvPage1.setTextColor(Color.RED);
+				tvPage1.setTypeface(null, Typeface.BOLD);
+			}else{
+				tvPage1.setTextColor(Color.BLACK);
+				tvPage1.setTypeface(null, Typeface.NORMAL);
+			}
 			
 			tvPage1.setText(classic1k.Block1Value);
 			tvPage2.setText(classic1k.Block2Value);
