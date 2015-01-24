@@ -315,6 +315,7 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements
 							if (mAdapter != null) {
 								mAdapter.disableForegroundDispatch(MifareClassic1kActivity.this);
 							}
+							isWriteDone = true;
 							dialog.dismiss();
 						}
 					});
@@ -381,6 +382,7 @@ public class MifareClassic1kActivity extends NFCUtilsBase implements
 									this,
 									R.layout.classic_1k_individual_item,
 									CommonValues.getInstance().mifareClassic1kList);
+							isWriteDone=false;
 							writeAlertDialog.dismiss();
 							adapter.notifyDataSetChanged();
 							isWriteDone = true;

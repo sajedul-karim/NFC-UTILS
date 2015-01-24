@@ -250,7 +250,8 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 					if (mAdapter != null) {
 						mAdapter.disableForegroundDispatch(MifareUltralightCActivity.this);
 					}
-					dialog.dismiss();					
+					dialog.dismiss();	
+					isWriteDone=false;
 				}
 			});
 			writeAlertDialog = writeBuilder.create();
