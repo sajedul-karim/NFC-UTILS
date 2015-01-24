@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -32,7 +33,7 @@ import com.nfcutil.app.util.CommonTask;
 import com.nfcutil.app.util.CommonValues;
 import com.nfcutil.app.util.NFCHammer;
 
-public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemClickListener{
+public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemClickListener, OnClickListener{
 	TextView tvUID, tvType, tvMemory, tvPage, tvBlock, value1, value2, value3, value4;
 	PinnedHeaderListView lvMifareUltralLightC;
 	MifareUltraLightCAdapter adapter;
@@ -46,6 +47,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	PendingIntent mPendingIntent;
 	Tag tag;
 	AlertDialog writeAlertDialog ;
+	ImageView iv_info;
 	
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -75,8 +77,10 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 		tvPage = (TextView) findViewById(R.id.tvPage);
 		tvBlock = (TextView) findViewById(R.id.tvBlock);
 		lvMifareUltralLightC = (PinnedHeaderListView) findViewById(R.id.lvMifareUltralLightC);
+		iv_info=(ImageView) findViewById(R.id.iv_info);
 		
 		lvMifareUltralLightC.setOnItemClickListener(this);
+		iv_info.setOnClickListener(this);
 		setValue();
 	}
 
@@ -309,6 +313,18 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 				//Toast.makeText(this, "Please Tap the UltraLight tag.", Toast.LENGTH_SHORT).show();
 			}
 		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId()==R.id.iv_info){
+			LayoutInflater inflater = getLayoutInflater();
+			View dialoglayout = inflater.inflate(R.layout.info_dialog_layout_uc, null);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setView(dialoglayout);
+			builder.show();
+		}
+		
 	}
 	
 }

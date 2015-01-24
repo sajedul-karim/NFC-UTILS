@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/tv_select_block"
+                android:text="@string/tv_show_value_as"
                 android:textColor="@color/header_text"
                 android:textSize="15sp"
                 android:textStyle="bold" />

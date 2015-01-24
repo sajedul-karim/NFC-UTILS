@@ -116,8 +116,16 @@ public class HomeActivity extends NFCUtilsBase {
 					}
 					break;
 				case MifareClassic.TYPE_PLUS:
+					CommonTask
+					.createToast(
+							"This Tag is Mifare Classic Plus. We will Add this type in next version",
+							this, Color.GREEN);
 					break;
 				case MifareClassic.TYPE_PRO:
+					CommonTask
+					.createToast(
+							"This Tag is Mifare Classic Pro. We will Add this type in next version",
+							this, Color.GREEN);
 					break;
 				}
 			} else if (techList[i].equals(MifareUltralight.class.getName())) {
@@ -144,12 +152,24 @@ public class HomeActivity extends NFCUtilsBase {
 				// info[1] = "IsoDep";
 				@SuppressWarnings("unused")
 				IsoDep isoDepTag = IsoDep.get(tag);
+			/*	CommonTask
+				.createToast(
+						"This Tag is IsoDep tag. We will Add this type in next version",
+						this, Color.GREEN);*/
 				// info[0] += "IsoDep \n";
 			} else if (techList[i].equals(Ndef.class.getName())) {
 				Ndef.get(tag);
+				/*CommonTask
+				.createToast(
+						"This Tag is NDEF Tag. We will Add this type in next version",
+						this, Color.GREEN);*/
 			} else if (techList[i].equals(NdefFormatable.class.getName())) {
 				@SuppressWarnings("unused")
 				NdefFormatable ndefFormatableTag = NdefFormatable.get(tag);
+			/*	CommonTask
+				.createToast(
+						"This Tag is NDEF formatable Tag. We will Add this type in next version",
+						this, Color.GREEN);*/
 			}
 		}
 	}

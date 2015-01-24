@@ -11,7 +11,6 @@ import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,7 +90,7 @@ public class CommonTask {
 		
 		Toast toast = new Toast(_context);
 		toast.setGravity(Gravity.TOP|Gravity.FILL_HORIZONTAL, 0, Y);
-		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setDuration(Toast.LENGTH_SHORT);
 		toast.setView(tostLayout);
 		toast.show();
 	}

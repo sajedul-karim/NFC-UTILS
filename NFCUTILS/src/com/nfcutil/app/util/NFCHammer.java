@@ -61,7 +61,7 @@ public class NFCHammer {
 			}
 
 		} catch (IOException e) {
-			Log.d("skm", e.getMessage());
+			//Log.d("skm", e.getMessage());
 		} finally {
 			if (mifare != null) {
 				try {

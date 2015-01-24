@@ -17,7 +17,7 @@
     <string name="uid">UID</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Cancel</string>
-    <string name="tv_select_block">Write Selected Block</string>
+    <string name="tv_select_block">Select Block to Write</string>
     <string name="tv_show_value_as">Show Value as</string>
     <string name="write">Write</string>
     <string name="reading_tag">Reading Tag...</string>
@@ -28,4 +28,7 @@
     <string name="page">Number Of Block</string>
     <string name="block_size">Number of Sector</string>
     <string name="block_value">Block Value</string>
+    <string name="write_helper">Press any items to see details and write into block.</string>
+    <string name="uc_help_text">RED Color blocks (Page #0 to #3) and page(#40 to #43) are manufacturer area. You can not modify this block. This block is used for locking. </string>
+    <string name="c_1k_help_text">RED Color blocks are manufacturer area. You can not modify this block. This block is used for locking </string>
 </resources>
