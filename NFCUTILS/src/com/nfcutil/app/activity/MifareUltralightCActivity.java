@@ -68,6 +68,11 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	@Override
 	protected void onPause() {
 		super.onPause();
+		if(!isWriteDone){
+			if (mAdapter != null) {
+				mAdapter.disableForegroundDispatch(MifareUltralightCActivity.this);
+			}
+			}
 		
 	}
 
@@ -264,6 +269,7 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 					CommonTask.showWirelessSettingsDialog(this);
 				}
 				mAdapter.enableForegroundDispatch(this, mPendingIntent, null, null);
+				isWriteDone=true;
 			}
 			writeAlertDialog.show();
 		}catch(Exception ex){
@@ -273,8 +279,8 @@ public class MifareUltralightCActivity extends NFCUtilsBase implements OnItemCli
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
-		NFCDispatchDisable disable = new NFCDispatchDisable();
-		disable.execute();
+		/*NFCDispatchDisable disable = new NFCDispatchDisable();
+		disable.execute();*/
 		super.onNewIntent(intent);
 		setIntent(intent);
 		resolveIntent(intent);
