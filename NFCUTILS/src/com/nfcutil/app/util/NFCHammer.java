@@ -30,6 +30,7 @@ public class NFCHammer {
 
 	public static boolean ReadULCValue(Context context, Tag t) {
 		CommonValues.getInstance().mifareUltraLightCList.clear();
+		
 		Log.d("skm",
 				"===========Mifare Ultralight C Read Start==================");
 		Tag tag = t;
@@ -39,6 +40,7 @@ public class NFCHammer {
 		Log.d("skm", "Tag Type :" + mifare.getType());
 		CommonValues.getInstance().Type = "" + mifare.getType();
 		try {
+			String page0Value="";
 			tagId = CommonTask.getHexString(tag.getId());
 			Log.d("skm", "UID :" + tagId.trim());
 			CommonValues.getInstance().Name = "Mifare UltraLight C";
@@ -50,15 +52,34 @@ public class NFCHammer {
 			mifare.connect();
 			int maxSize=mifare.getMaxTransceiveLength();
 			Log.d("skm", "max length:"+maxSize);
-			for (int i = 0; i < 11; i++) {
-				mifareUltraLightC = new MifareUltraLightC();
+			for (int i = 0; i < 11; i++) {mifareUltraLightC = new MifareUltraLightC();
 				mifareUltraLightC.Header = "Page " + (i * 4) + " to "
 						+ (((i + 1) * 4) - 1);
+			
 
 				mifareUltraLightC.pagevalue1 = CommonTask.getHexString(
 						mifare.readPages(i * 4)).substring(0, 8);
 				mifareUltraLightC.pagevalue2 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 1))).substring(0, 8);
+				if(i==10&&CommonTask.getHexString(mifare.readPages(41)).contains(CommonTask.getHexString(mifare.readPages(0)).substring(0, 16))){
+					
+						//
+					CommonValues.getInstance().Memory = "168 bytes";
+					CommonValues.getInstance().ultraLightCPageCount = "42";
+					mifareUltraLightC.pagevalue3 = "";
+					mifareUltraLightC.pagevalue4 = "";
+					mifareUltraLightC.block1 = (i * 4);
+					mifareUltraLightC.block2 = ((i * 4) + 1);
+					mifareUltraLightC.block3 = ((i * 4) + 2);
+					mifareUltraLightC.block4 = ((i * 4) + 3);
+					CommonValues.getInstance().mifareUltraLightCList
+							.add(mifareUltraLightC);
+					
+					break;
+				}
+				
+				
+				
 				mifareUltraLightC.pagevalue3 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 2))).substring(0, 8);
 				mifareUltraLightC.pagevalue4 = CommonTask.getHexString(
@@ -235,6 +256,21 @@ public class NFCHammer {
 
 			} else if (mfc
 					.authenticateSectorWithKeyA(Integer.parseInt(sectorNumber),
+							MifareClassic.KEY_NFC_FORUM)) {
+				Log.d("skm",
+						"Authorization granted to sector with NFC_FORUM key");
+
+			}else if (mfc.authenticateSectorWithKeyB(Integer.parseInt(sectorNumber),
+					MifareClassic.KEY_MIFARE_APPLICATION_DIRECTORY)) {
+				Log.d("skm", "Authorized sector with MAD key");
+
+			} else if (mfc.authenticateSectorWithKeyB(
+					Integer.parseInt(sectorNumber), MifareClassic.KEY_DEFAULT)) {
+				Log.d("skm",
+						"Authorization granted to sector  with DEFAULT key");
+
+			} else if (mfc
+					.authenticateSectorWithKeyB(Integer.parseInt(sectorNumber),
 							MifareClassic.KEY_NFC_FORUM)) {
 				Log.d("skm",
 						"Authorization granted to sector with NFC_FORUM key");

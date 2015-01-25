@@ -1,5 +1,7 @@
 package com.nfcutil.app.activity;
 
+import java.io.IOException;
+
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -12,8 +14,10 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
+import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -140,6 +144,8 @@ public class HomeActivity extends NFCUtilsBase {
 				case MifareUltralight.TYPE_ULTRALIGHT:
 					break;
 				case MifareUltralight.TYPE_ULTRALIGHT_C:
+					
+					
 					boolean result = NFCHammer.ReadULCValue(this, tag);
 					if(result){
 						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
@@ -189,4 +195,6 @@ public class HomeActivity extends NFCUtilsBase {
 			}
 		});
 	}
+	
+	
 }
