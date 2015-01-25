@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NFC UTILS</string>
+    <string name="hello_world">こんにちは世界！</string>
+    <string name="action_settings">[設定]</string>
+    <string name="error">エラー</string>
+    <string name="disable">NFCはdisableです</string>
+    <string name="no_nfc_found">見つかりませNFCん</string>
+    <string name="no_nfc">このアプリケーションを実行するにはお使いのデバイスは、 NFC技術を持っている必要があります。残念ながらお使いのデバイスは、 NFCを持っていません。この不便をおかけし申し訳ありません。終了し、[OK]を押してください。</string>
+	<string name="nfc_disabled">NFCがなければあなたがタグを読み取ることができません。現在、 NFCは、お使いのデバイスで有効になっていません。無線設定に移動し、 NFCを有効にしてください。</string>
+    <string name="ulc">Mifare UltraLight C</string>
+    <string name="mc1k">Mifare Classic 1k</string>
+    <string name="header_name">名前</string>
+    <string name="header_value">値</string>
+    <string name="uid">UID</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+	<string name="tv_select_block">書くようにブロックを選択</string>
+    <string name="tv_show_value_as">として表示値</string>
+    <string name="write">Write</string>
+    <string name="reading_tag">読書タグ...</string>
+    <string name="dont_remove_tag">タグを削除`tを</string>
+    <string name="custom_toast">Custom Toast</string>
+    <string name="type">タイプ</string>
+    <string name="memory">メモリ</string>
+    <string name="page">ブロックの番号</string>
+    <string name="block_size">セクターの数</string>
+    <string name="block_value">ブロック値</string>
+    <string name="write_helper">詳細を確認し、ブロックに書き込む任意の項目を押してください。</string>
+    <string name="uc_help_text">赤色ブロックとページ（ ＃ 40 ＃ 43 ） （ ＃ 3ページに＃0 ）を、製造エリアである。あなたはこのブロックを変更することはできません。このブロックは、 OTP 、製造者データ、およびロックビットのためのもの </string>
+    <string name="c_1k_help_text">レッドカラーブロックは、メーカーのエリアです。あなたはこのブロックを変更することはできません。このブロックをロックするために使用され </string>
+    
+
+</resources>
