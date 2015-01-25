@@ -44,12 +44,12 @@ public class NFCHammer {
 						mifare.readPages(i * 4)).substring(0, 8);
 				mifareUltraLightC.pagevalue2 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 1))).substring(0, 8);
-				if (i == 10
-						&& CommonTask.getHexString(mifare.readPages(41))
+				if (i == 10 && CommonTask.getHexString(mifare.readPages(41))
 								.contains(
 										CommonTask.getHexString(
 												mifare.readPages(0)).substring(
 												0, 16))) {
+					mifareUltraLightC.Header = "Page " + (i * 4) + " to 41";
 					CommonValues.getInstance().Memory = "168 bytes";
 					CommonValues.getInstance().ultraLightCPageCount = "42";
 					mifareUltraLightC.pagevalue3 = "";
