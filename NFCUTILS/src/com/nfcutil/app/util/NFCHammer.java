@@ -1,36 +1,20 @@
 package com.nfcutil.app.util;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-
-import com.nfcutil.app.activity.MifareClassic1kActivity;
-import com.nfcutil.app.activity.MifareUltralightCActivity;
 import com.nfcutil.app.entity.MifareClassic1k;
 import com.nfcutil.app.entity.MifareUltraLightC;
 
 import android.content.Context;
-import android.content.Intent;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.util.Log;
-import android.widget.Toast;
 
 public class NFCHammer {
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public static boolean ReadULCValue(Context context, Tag t) {
 		CommonValues.getInstance().mifareUltraLightCList.clear();
-		
+
 		Log.d("skm",
 				"===========Mifare Ultralight C Read Start==================");
 		Tag tag = t;
@@ -40,7 +24,6 @@ public class NFCHammer {
 		Log.d("skm", "Tag Type :" + mifare.getType());
 		CommonValues.getInstance().Type = "" + mifare.getType();
 		try {
-			String page0Value="";
 			tagId = CommonTask.getHexString(tag.getId());
 			Log.d("skm", "UID :" + tagId.trim());
 			CommonValues.getInstance().Name = "Mifare UltraLight C";
@@ -50,20 +33,23 @@ public class NFCHammer {
 					+ mifare.PAGE_SIZE;
 			CommonValues.getInstance().ultraLightCPageCount = "44";
 			mifare.connect();
-			int maxSize=mifare.getMaxTransceiveLength();
-			Log.d("skm", "max length:"+maxSize);
-			for (int i = 0; i < 11; i++) {mifareUltraLightC = new MifareUltraLightC();
+			int maxSize = mifare.getMaxTransceiveLength();
+			Log.d("skm", "max length:" + maxSize);
+			for (int i = 0; i < 11; i++) {
+				mifareUltraLightC = new MifareUltraLightC();
 				mifareUltraLightC.Header = "Page " + (i * 4) + " to "
 						+ (((i + 1) * 4) - 1);
-			
 
 				mifareUltraLightC.pagevalue1 = CommonTask.getHexString(
 						mifare.readPages(i * 4)).substring(0, 8);
 				mifareUltraLightC.pagevalue2 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 1))).substring(0, 8);
-				if(i==10&&CommonTask.getHexString(mifare.readPages(41)).contains(CommonTask.getHexString(mifare.readPages(0)).substring(0, 16))){
-					
-						//
+				if (i == 10
+						&& CommonTask.getHexString(mifare.readPages(41))
+								.contains(
+										CommonTask.getHexString(
+												mifare.readPages(0)).substring(
+												0, 16))) {
 					CommonValues.getInstance().Memory = "168 bytes";
 					CommonValues.getInstance().ultraLightCPageCount = "42";
 					mifareUltraLightC.pagevalue3 = "";
@@ -74,12 +60,10 @@ public class NFCHammer {
 					mifareUltraLightC.block4 = ((i * 4) + 3);
 					CommonValues.getInstance().mifareUltraLightCList
 							.add(mifareUltraLightC);
-					
+
 					break;
 				}
-				
-				
-				
+
 				mifareUltraLightC.pagevalue3 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 2))).substring(0, 8);
 				mifareUltraLightC.pagevalue4 = CommonTask.getHexString(
@@ -94,7 +78,7 @@ public class NFCHammer {
 			}
 
 		} catch (IOException e) {
-			//Log.d("skm", e.getMessage());
+			// Log.d("skm", e.getMessage());
 		} finally {
 			if (mifare != null) {
 				try {
@@ -107,8 +91,10 @@ public class NFCHammer {
 		if (CommonValues.getInstance().mifareUltraLightCList.size() == 11) {
 			return true;
 		} else {
-			/*Toast.makeText(context, "Please Hold your card again!",
-					Toast.LENGTH_LONG).show();*/
+			/*
+			 * Toast.makeText(context, "Please Hold your card again!",
+			 * Toast.LENGTH_LONG).show();
+			 */
 			return false;
 		}
 	}
@@ -208,8 +194,10 @@ public class NFCHammer {
 		if (CommonValues.getInstance().mifareClassic1kList.size() == 16) {
 			return true;
 		} else {
-			/*Toast.makeText(context, "Please Hold your card again!",
-					Toast.LENGTH_LONG).show();*/
+			/*
+			 * Toast.makeText(context, "Please Hold your card again!",
+			 * Toast.LENGTH_LONG).show();
+			 */
 			return false;
 		}
 	}
@@ -260,7 +248,8 @@ public class NFCHammer {
 				Log.d("skm",
 						"Authorization granted to sector with NFC_FORUM key");
 
-			}else if (mfc.authenticateSectorWithKeyB(Integer.parseInt(sectorNumber),
+			} else if (mfc.authenticateSectorWithKeyB(
+					Integer.parseInt(sectorNumber),
 					MifareClassic.KEY_MIFARE_APPLICATION_DIRECTORY)) {
 				Log.d("skm", "Authorized sector with MAD key");
 
