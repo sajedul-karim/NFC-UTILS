@@ -32,7 +32,13 @@ public class HomeActivity extends NFCUtilsBase {
 	protected void onCreate(Bundle saveInstance) {
 		super.onCreate(saveInstance);
 		setContentView(R.layout.activity_home);
+		checkNfcIsExistsOrNot();
 		Initialization();
+	}
+
+	private void checkNfcIsExistsOrNot() {
+		
+		
 	}
 
 	@Override
@@ -59,7 +65,7 @@ public class HomeActivity extends NFCUtilsBase {
 		mAdapter = NfcAdapter.getDefaultAdapter(this);		
 		
 		if (mAdapter == null) {
-			CommonTask.showMessage(this, R.string.error, R.string.no_nfc);
+			CommonTask.showMessage(this, R.string.no_nfc_found, R.string.no_nfc);
 			// finish();
 			return;
 		}

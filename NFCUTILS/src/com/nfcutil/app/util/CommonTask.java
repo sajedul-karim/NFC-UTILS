@@ -24,6 +24,8 @@ public class CommonTask {
 	public static void showWirelessSettingsDialog(final Context context) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setMessage(R.string.nfc_disabled);
+		builder.setCancelable(false);
+		builder.setTitle(R.string.disable);
 		builder.setPositiveButton(android.R.string.ok,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialogInterface, int i) {
@@ -48,6 +50,7 @@ public class CommonTask {
 				}).create();
 		mDialog.setTitle(title);
 		mDialog.setMessage(_context.getText(message));
+		mDialog.setCancelable(false);
 		mDialog.show();
 	}
 

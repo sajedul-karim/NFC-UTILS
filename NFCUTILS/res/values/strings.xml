@@ -4,12 +4,15 @@
     <string name="app_name">NFC UTILS</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    
     <string name="intro_message">This is a simple app to read various tags (NDEF, RFID, FeliCa, ISO 14443, etc).\n\nYou use it by holding a tag/card against the back of your device.\n\nPlease let me know if you want me to change how the data is displayed. Also send me an e-mail (adam@anyro.se) if you have any problems with the app and I\'ll let you know when I\'ve fixed it. You can also see the source code and report issues at https://github.com/nadam/nfc-reader.\n\nIf you can\'t read any tag, please try some of the other NFC apps on Google Play and let me know if this app is the only one not working. Thanks!\n\n/Adam</string>
     <string name="error">Error</string>
-    <string name="no_nfc">No NFC found on this device</string>
-    <string name="nfc_disabled">NFC is not enabled. Please go to the wireless settings to enable it.</string>
-
+    <string name="disable"> NFC is Disable</string>
+    <string name="no_nfc_found">No NFC Found</string>
+    <string name="no_nfc">To run this application Your device must have NFC Technology.
+							Unfortunently Your device does not have NFC.Sorry for this inconvenience.
+							Please press OK to exit.</string>
+    <string name="nfc_disabled">Without NFC You cannot read Tags.Currently NFC is not enabled in your 
+        Device. Please go to the wireless settings and Enable NFC.</string>
     <string name="ulc">Mifare UltraLight C</string>
     <string name="mc1k">Mifare Classic 1k</string>
     <string name="header_name">Name</string>
@@ -31,4 +34,5 @@
     <string name="write_helper">Press any items to see details and write into block.</string>
     <string name="uc_help_text">RED Color blocks (Page #0 to #3) and page(#40 to #43) are manufacturer area. You can not modify this block. This blocks are for OTP, manufacturer data, and locking bits </string>
     <string name="c_1k_help_text">RED Color blocks are manufacturer area. You can not modify this block. This blocks are used for locking </string>
+
 </resources>

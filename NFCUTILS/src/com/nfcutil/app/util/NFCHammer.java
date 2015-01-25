@@ -17,6 +17,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class NFCHammer {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public static boolean ReadULCValue(Context context, Tag t) {
 		CommonValues.getInstance().mifareUltraLightCList.clear();
@@ -38,6 +48,8 @@ public class NFCHammer {
 					+ mifare.PAGE_SIZE;
 			CommonValues.getInstance().ultraLightCPageCount = "44";
 			mifare.connect();
+			int maxSize=mifare.getMaxTransceiveLength();
+			Log.d("skm", "max length:"+maxSize);
 			for (int i = 0; i < 11; i++) {
 				mifareUltraLightC = new MifareUltraLightC();
 				mifareUltraLightC.Header = "Page " + (i * 4) + " to "
