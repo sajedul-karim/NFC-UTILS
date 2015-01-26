@@ -23,6 +23,7 @@
     <string name="memory">记忆</string>
     <string name="page">块的数量</string>
     <string name="block_size">扇区数</string>
+    
     <string name="block_value">格挡值</string>
     <string name="write_helper">按任何产品查看详细信息和写入的块。</string>
     <string name="uc_help_text">红色块（页＃0至＃3）和第（＃40〜＃43）是制造商区域。你不能修改这个块。此块是OTP，制造商的数据和锁定位 </string>
