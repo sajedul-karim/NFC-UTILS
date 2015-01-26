@@ -32,6 +32,7 @@
     <string name="block_value">Block Value</string>
     <string name="write_helper">Press any items to see details and write into block.</string>
     <string name="uc_help_text">RED Color blocks (Page #0 to #3) and page(#40 to #43) are manufacturer area. You can not modify this block. This blocks are for OTP, manufacturer data, and locking bits </string>
+    <string name="uc_help_text_203">RED Color blocks (Page #0 to #3) and page(#40 to #41) are manufacturer area. You can not modify this block. This blocks are for OTP, manufacturer data, and locking bits </string>
     <string name="c_1k_help_text">RED Color blocks are manufacturer area. You can not modify this block. This blocks are used for locking </string>
 
 </resources>
