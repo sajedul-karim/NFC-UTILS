@@ -26,7 +26,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-import com.example.nfcutils.R;
+import com.nfcutils.app.R;
 import com.nfcutil.app.adapters.MifareUltraLightCAdapter;
 import com.nfcutil.app.base.NFCUtilsBase;
 import com.nfcutil.app.entity.MifareUltraLightC;

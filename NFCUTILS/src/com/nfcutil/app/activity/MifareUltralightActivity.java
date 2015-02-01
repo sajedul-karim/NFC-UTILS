@@ -26,7 +26,6 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-import com.example.nfcutils.R;
 import com.nfcutil.app.adapters.MifareUltraLightAdapter;
 import com.nfcutil.app.adapters.MifareUltraLightCAdapter;
 import com.nfcutil.app.base.NFCUtilsBase;
@@ -34,6 +33,7 @@ import com.nfcutil.app.entity.MifareUltraLightC;
 import com.nfcutil.app.util.CommonTask;
 import com.nfcutil.app.util.CommonValues;
 import com.nfcutil.app.util.NFCHammer;
+import com.nfcutils.app.R;
 
 public class MifareUltralightActivity extends NFCUtilsBase implements OnItemClickListener, OnClickListener{
 	TextView tvUID, tvType, tvMemory, tvPage, tvBlock, value1, value2, value3, value4;

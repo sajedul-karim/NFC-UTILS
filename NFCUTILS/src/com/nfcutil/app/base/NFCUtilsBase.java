@@ -1,6 +1,6 @@
 package com.nfcutil.app.base;
 
-import com.example.nfcutils.R;
+import com.nfcutils.app.R;
 
 import android.app.ActionBar;
 import android.os.Bundle;

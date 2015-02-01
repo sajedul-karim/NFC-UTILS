@@ -25,13 +25,13 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.nfcutils.R;
 import com.nfcutil.app.adapters.Classic1KAdapter;
 import com.nfcutil.app.base.NFCUtilsBase;
 import com.nfcutil.app.entity.MifareClassic1k;
 import com.nfcutil.app.util.CommonTask;
 import com.nfcutil.app.util.CommonValues;
 import com.nfcutil.app.util.NFCHammer;
+import com.nfcutils.app.R;
 
 public class MifareClassic1kActivity extends NFCUtilsBase implements
 		OnItemClickListener, OnClickListener {

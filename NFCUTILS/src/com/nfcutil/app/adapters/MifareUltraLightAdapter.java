@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.nfcutils.R;
+import com.nfcutils.app.R;
 import com.nfcutil.app.entity.MifareUltraLightC;
 
 public class MifareUltraLightAdapter extends SectionedBaseAdapter {

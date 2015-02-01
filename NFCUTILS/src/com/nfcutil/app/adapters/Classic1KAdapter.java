@@ -5,7 +5,7 @@ import java.util.List;
 
 import za.co.immedia.pinnedheaderlistview.SectionedBaseAdapter;
 
-import com.example.nfcutils.R;
+import com.nfcutils.app.R;
 import com.nfcutil.app.entity.MifareClassic1k;
 
 import android.content.Context;

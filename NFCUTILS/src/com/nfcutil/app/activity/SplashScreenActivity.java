@@ -1,6 +1,6 @@
 package com.nfcutil.app.activity;
 
-import com.example.nfcutils.R;
+import com.nfcutils.app.R;
 
 import android.app.Activity;
 import android.content.Intent;
