@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nfcutils.R;
+import com.nfcutils.app.R;
 import com.nfcutil.app.activity.HomeActivity;
 
 public class CommonTask {

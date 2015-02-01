@@ -27,6 +27,7 @@
     <string name="block_value">格挡值</string>
     <string name="write_helper">按任何产品查看详细信息和写入的块。</string>
     <string name="uc_help_text">红色块（页＃0至＃3）和第（＃40〜＃43）是制造商区域。你不能修改这个块。此块是OTP，制造商的数据和锁定位 </string>
+    <string name="uc_help_text_203">红色块（页＃0至＃3）和第（＃40〜＃41）是制造商区域。你不能修改这个块。此块是OTP，制造商的数据和锁定位 </string>
     <string name="c_1k_help_text">红色块是制造商的区域。你不能修改这个块。此块用于锁定 </string>
 
 </resources>

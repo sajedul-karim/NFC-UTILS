@@ -1,7 +1,5 @@
 package com.nfcutil.app.activity;
 
-import java.io.IOException;
-
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -14,17 +12,13 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
-import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-import com.example.nfcutils.R;
 import com.nfcutil.app.base.NFCUtilsBase;
 import com.nfcutil.app.util.CommonTask;
 import com.nfcutil.app.util.NFCHammer;
+import com.nfcutils.app.R;
 
 public class HomeActivity extends NFCUtilsBase {
 	NfcAdapter mAdapter;
