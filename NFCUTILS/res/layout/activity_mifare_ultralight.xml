@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:text="@string/ulc"
+            android:text="@string/ul"
             android:textColor="@color/bottom_text_color" />
 
        <ImageView

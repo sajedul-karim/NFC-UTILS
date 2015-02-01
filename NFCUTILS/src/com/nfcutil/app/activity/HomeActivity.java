@@ -142,6 +142,18 @@ public class HomeActivity extends NFCUtilsBase {
 				MifareUltralight mifareUlTag = MifareUltralight.get(tag);
 				switch (mifareUlTag.getType()) {
 				case MifareUltralight.TYPE_ULTRALIGHT:
+					boolean result1 = NFCHammer.readUltraLightValue(this, tag);
+					if(result1){
+						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
+						Intent Callintent = new Intent(this, MifareUltralightActivity.class);
+						Callintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+						startActivity(Callintent);
+						overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+					}
+					else{
+						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
+						CommonTask.createToast("Tap The card again!!!", this, Color.RED);
+					}
 					break;
 				case MifareUltralight.TYPE_ULTRALIGHT_C:
 					

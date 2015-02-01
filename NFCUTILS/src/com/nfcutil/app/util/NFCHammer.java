@@ -11,6 +11,76 @@ import android.nfc.tech.MifareUltralight;
 import android.util.Log;
 
 public class NFCHammer {
+	
+	
+	public static boolean readUltraLightValue(Context context,Tag t){
+		CommonValues.getInstance().mifareUltraLightList.clear();
+		
+		Log.d("skm",
+				"===========Mifare Ultralight C Read Start==================");
+		Tag tag = t;
+		MifareUltraLightC mifareUltraLightC;
+		String tagId;
+		MifareUltralight mifare = MifareUltralight.get(tag);
+		Log.d("skm", "Tag Type :" + mifare.getType());
+		CommonValues.getInstance().Type = "" + mifare.getType();
+		try {
+			tagId = CommonTask.getHexString(tag.getId());
+			Log.d("skm", "UID :" + tagId.trim());
+			CommonValues.getInstance().Name = "Mifare UltraLight";
+			CommonValues.getInstance().UID = tagId;
+			CommonValues.getInstance().Memory = "64 bytes";
+			CommonValues.getInstance().ultraLightCPageSize = ""
+					+ mifare.PAGE_SIZE;
+			CommonValues.getInstance().ultraLightCPageCount = "16";
+			mifare.connect();
+			int maxSize = mifare.getMaxTransceiveLength();
+			Log.d("skm", "max length:" + maxSize);
+			for (int i = 0; i < 4; i++) {
+				mifareUltraLightC = new MifareUltraLightC();
+				mifareUltraLightC.Header = "Page " + (i * 4) + " to "
+						+ (((i + 1) * 4) - 1);
+
+				mifareUltraLightC.pagevalue1 = CommonTask.getHexString(
+						mifare.readPages(i * 4)).substring(0, 8);
+				mifareUltraLightC.pagevalue2 = CommonTask.getHexString(
+						mifare.readPages(((i * 4) + 1))).substring(0, 8);
+		
+				mifareUltraLightC.pagevalue3 = CommonTask.getHexString(
+						mifare.readPages(((i * 4) + 2))).substring(0, 8);
+				mifareUltraLightC.pagevalue4 = CommonTask.getHexString(
+						mifare.readPages(((i * 4) + 3))).substring(0, 8);
+				mifareUltraLightC.block1 = (i * 4);
+				mifareUltraLightC.block2 = ((i * 4) + 1);
+				mifareUltraLightC.block3 = ((i * 4) + 2);
+				mifareUltraLightC.block4 = ((i * 4) + 3);
+				CommonValues.getInstance().mifareUltraLightList
+						.add(mifareUltraLightC);
+
+			}
+
+		} catch (IOException e) {
+			// Log.d("skm", e.getMessage());
+		} finally {
+			if (mifare != null) {
+				try {
+					mifare.close();
+				} catch (IOException e) {
+					Log.d("skm", e.getMessage());
+				}
+			}
+		}
+		/*if (CommonValues.getInstance().mifareUltraLightList.size() == 4) {
+			return true;
+		} else {
+			
+			 * Toast.makeText(context, "Please Hold your card again!",
+			 * Toast.LENGTH_LONG).show();
+			 
+			return false;
+		}*/
+		return true;
+	}
 
 	public static boolean ReadULCValue(Context context, Tag t) {
 		CommonValues.getInstance().mifareUltraLightCList.clear();

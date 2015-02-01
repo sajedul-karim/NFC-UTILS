@@ -12,6 +12,7 @@
 							Please press OK to exit.</string>
     <string name="nfc_disabled">Without NFC You cannot read Tags.Currently NFC is not enabled in your 
         Device. Please go to the wireless settings and Enable NFC.</string>
+    <string name="ul">Mifare UltraLight</string>
     <string name="ulc">Mifare UltraLight C</string>
     <string name="mc1k">Mifare Classic 1k</string>
     <string name="header_name">Name</string>
@@ -29,8 +30,10 @@
     <string name="memory">Memory</string>
     <string name="page">Number Of Block</string>
     <string name="block_size">Number of Sector</string>
+    <string name="each_block_size">Block Size</string>
     <string name="block_value">Block Value</string>
     <string name="write_helper">Press any items to see details and write into block.</string>
+    <string name="ul_help_text">RED Color blocks (Page #0 to #3) are manufacturer area. You can not modify this block. This blocks are for OTP, manufacturer data, and locking bits </string>
     <string name="uc_help_text">RED Color blocks (Page #0 to #3) and page(#40 to #43) are manufacturer area. You can not modify this block. This blocks are for OTP, manufacturer data, and locking bits </string>
     <string name="uc_help_text_203">RED Color blocks (Page #0 to #3) and page(#40 to #41) are manufacturer area. You can not modify this block. This blocks are for OTP, manufacturer data, and locking bits </string>
     <string name="c_1k_help_text">RED Color blocks are manufacturer area. You can not modify this block. This blocks are used for locking </string>
