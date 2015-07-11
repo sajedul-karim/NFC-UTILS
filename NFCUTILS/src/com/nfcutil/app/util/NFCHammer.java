@@ -1,21 +1,26 @@
 package com.nfcutil.app.util;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+
 import com.nfcutil.app.entity.MifareClassic1k;
 import com.nfcutil.app.entity.MifareUltraLightC;
-
 import android.content.Context;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
+import android.nfc.tech.Ndef;
 import android.util.Log;
 
 public class NFCHammer {
-	
-	
-	public static boolean readUltraLightValue(Context context,Tag t){
+
+	@SuppressWarnings("static-access")
+	public static boolean readUltraLightValue(Context context, Tag t) {
 		CommonValues.getInstance().mifareUltraLightList.clear();
-		
+
 		Log.d("skm",
 				"===========Mifare Ultralight C Read Start==================");
 		Tag tag = t;
@@ -45,7 +50,7 @@ public class NFCHammer {
 						mifare.readPages(i * 4)).substring(0, 8);
 				mifareUltraLightC.pagevalue2 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 1))).substring(0, 8);
-		
+
 				mifareUltraLightC.pagevalue3 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 2))).substring(0, 8);
 				mifareUltraLightC.pagevalue4 = CommonTask.getHexString(
@@ -70,18 +75,19 @@ public class NFCHammer {
 				}
 			}
 		}
-		/*if (CommonValues.getInstance().mifareUltraLightList.size() == 4) {
-			return true;
-		} else {
-			
-			 * Toast.makeText(context, "Please Hold your card again!",
-			 * Toast.LENGTH_LONG).show();
-			 
-			return false;
-		}*/
+		/*
+		 * if (CommonValues.getInstance().mifareUltraLightList.size() == 4) {
+		 * return true; } else {
+		 * 
+		 * Toast.makeText(context, "Please Hold your card again!",
+		 * Toast.LENGTH_LONG).show();
+		 * 
+		 * return false; }
+		 */
 		return true;
 	}
 
+	@SuppressWarnings("static-access")
 	public static boolean ReadULCValue(Context context, Tag t) {
 		CommonValues.getInstance().mifareUltraLightCList.clear();
 
@@ -114,7 +120,8 @@ public class NFCHammer {
 						mifare.readPages(i * 4)).substring(0, 8);
 				mifareUltraLightC.pagevalue2 = CommonTask.getHexString(
 						mifare.readPages(((i * 4) + 1))).substring(0, 8);
-				if (i == 10 && CommonTask.getHexString(mifare.readPages(41))
+				if (i == 10
+						&& CommonTask.getHexString(mifare.readPages(41))
 								.contains(
 										CommonTask.getHexString(
 												mifare.readPages(0)).substring(
@@ -353,6 +360,67 @@ public class NFCHammer {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean readTopazCard(Tag tag) {
+		Ndef ndef = Ndef.get(tag);
+		String TAG="TP";
+		if (ndef != null) {
+			try {
+				ndef.connect();
+				Log.d(TAG, "UID : " + CommonTask.getHexString(tag.getId()));
+				Log.d(TAG, "Type: " + ndef.getType());
+				Log.d(TAG, "Max Size: " + ndef.getMaxSize() + " Bytes");
+				Log.d(TAG, "Can Make Read Only : " + ndef.canMakeReadOnly());
+				Log.d(TAG, "Is Connected : " + ndef.isConnected());
+				Log.d(TAG, "Is Writtable : " + ndef.isWritable());
+				NdefMessage ndefMessage = ndef.getCachedNdefMessage();
+
+				NdefRecord[] records = ndefMessage.getRecords();
+				for (NdefRecord ndefRecord : records) {
+					if (ndefRecord.getTnf() == NdefRecord.TNF_WELL_KNOWN
+							&& Arrays.equals(ndefRecord.getType(),
+									NdefRecord.RTD_TEXT)) {
+						try {
+
+							String msg2 = readText((ndefRecord));
+							Log.d(TAG, "Data : " + msg2);
+							Log.d(TAG, "Size : "
+									+ ndefRecord.getPayload().length);
+						} catch (UnsupportedEncodingException e) {
+							Log.e("", "Unsupported Encoding", e);
+						}
+					}
+				}
+			} catch (Exception e) {
+				Log.e("TagWriting", e.toString());
+			} finally {
+				try {
+					ndef.close();
+				} catch (Exception e) {
+				}
+			}
+			
+		}
+		return true;
+	}
+	
+	private String readText(NdefRecord record)
+			throws UnsupportedEncodingException {
+		byte[] payload = record.getPayload();
+		// Get the Text Encoding
+		String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16";
+
+		// Get the Language Code
+		int languageCodeLength = payload[0] & 0063;
+
+		// String languageCode = new String(payload, 1, languageCodeLength,
+		// "US-ASCII");
+		// e.g. "en"
+
+		// Get the Text
+		return new String(payload, languageCodeLength + 1, payload.length
+				- languageCodeLength - 1, textEncoding);
 	}
 
 }

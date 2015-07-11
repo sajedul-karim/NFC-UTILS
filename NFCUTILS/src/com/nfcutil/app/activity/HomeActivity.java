@@ -24,7 +24,9 @@ public class HomeActivity extends NFCUtilsBase {
 	NfcAdapter mAdapter;
 	PendingIntent mPendingIntent;
 	ProgressDialog progressDialog;
-	AlertDialog writeAlertDialog ;
+	AlertDialog writeAlertDialog;
+	final protected static char[] hexArray = { '0', '1', '2', '3', '4', '5',
+			'6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 	@Override
 	protected void onCreate(Bundle saveInstance) {
@@ -35,8 +37,7 @@ public class HomeActivity extends NFCUtilsBase {
 	}
 
 	private void checkNfcIsExistsOrNot() {
-		
-		
+
 	}
 
 	@Override
@@ -60,10 +61,11 @@ public class HomeActivity extends NFCUtilsBase {
 	}
 
 	private void Initialization() {
-		mAdapter = NfcAdapter.getDefaultAdapter(this);		
-		
+		mAdapter = NfcAdapter.getDefaultAdapter(this);
+
 		if (mAdapter == null) {
-			CommonTask.showMessage(this, R.string.no_nfc_found, R.string.no_nfc);
+			CommonTask
+					.showMessage(this, R.string.no_nfc_found, R.string.no_nfc);
 			// finish();
 			return;
 		}
@@ -76,14 +78,14 @@ public class HomeActivity extends NFCUtilsBase {
 		showProgressDialog();
 		super.onNewIntent(intent);
 		new Handler().postDelayed(new Runnable() {
-			
+
 			@Override
-			public void run() {						
+			public void run() {
 				setIntent(intent);
 				resolveIntent(intent);
 			}
-		},0);
-		
+		}, 0);
+
 	}
 
 	private void resolveIntent(Intent intent) {
@@ -106,30 +108,38 @@ public class HomeActivity extends NFCUtilsBase {
 					MifareClassic mfc = MifareClassic.get(tag);
 					// resolveIntentClassic(mfc);
 					boolean result = NFCHammer.ReadClassic1kValue(this, mfc);
-					if(result){
-						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
-						Intent UC1kintent = new Intent(this, MifareClassic1kActivity.class);
-						UC1kintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					if (result) {
+						findViewById(R.id.incProgressBar).setVisibility(
+								View.GONE);
+						Intent UC1kintent = new Intent(this,
+								MifareClassic1kActivity.class);
+						UC1kintent
+								.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(UC1kintent);
-						overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-						//overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-					}else{
-						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
-						CommonTask.createToast("Tap The card again!!!", this, Color.RED);
-						//Toast.makeText(this, "Tap The card again!!!", Toast.LENGTH_SHORT).show();
+						overridePendingTransition(android.R.anim.slide_in_left,
+								android.R.anim.slide_out_right);
+						// overridePendingTransition(R.anim.push_up_in,
+						// R.anim.push_up_out);
+					} else {
+						findViewById(R.id.incProgressBar).setVisibility(
+								View.GONE);
+						CommonTask.createToast("Tap The card again!!!", this,
+								Color.RED);
+						// Toast.makeText(this, "Tap The card again!!!",
+						// Toast.LENGTH_SHORT).show();
 					}
 					break;
 				case MifareClassic.TYPE_PLUS:
 					CommonTask
-					.createToast(
-							"This Tag is Mifare Classic Plus. We will Add this type in next version",
-							this, Color.GREEN);
+							.createToast(
+									"This Tag is Mifare Classic Plus. We will Add this type in next version",
+									this, Color.GREEN);
 					break;
 				case MifareClassic.TYPE_PRO:
 					CommonTask
-					.createToast(
-							"This Tag is Mifare Classic Pro. We will Add this type in next version",
-							this, Color.GREEN);
+							.createToast(
+									"This Tag is Mifare Classic Pro. We will Add this type in next version",
+									this, Color.GREEN);
 					break;
 				}
 			} else if (techList[i].equals(MifareUltralight.class.getName())) {
@@ -137,70 +147,84 @@ public class HomeActivity extends NFCUtilsBase {
 				switch (mifareUlTag.getType()) {
 				case MifareUltralight.TYPE_ULTRALIGHT:
 					boolean result1 = NFCHammer.readUltraLightValue(this, tag);
-					if(result1){
-						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
-						Intent Callintent = new Intent(this, MifareUltralightActivity.class);
-						Callintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					if (result1) {
+						findViewById(R.id.incProgressBar).setVisibility(
+								View.GONE);
+						Intent Callintent = new Intent(this,
+								MifareUltralightActivity.class);
+						Callintent
+								.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(Callintent);
-						overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-					}
-					else{
-						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
-						CommonTask.createToast("Tap The card again!!!", this, Color.RED);
+						overridePendingTransition(android.R.anim.slide_in_left,
+								android.R.anim.slide_out_right);
+					} else {
+						findViewById(R.id.incProgressBar).setVisibility(
+								View.GONE);
+						CommonTask.createToast("Tap The card again!!!", this,
+								Color.RED);
 					}
 					break;
 				case MifareUltralight.TYPE_ULTRALIGHT_C:
-					
-					
+
 					boolean result = NFCHammer.ReadULCValue(this, tag);
-					if(result){
-						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
-						Intent Callintent = new Intent(this, MifareUltralightCActivity.class);
-						Callintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					if (result) {
+						findViewById(R.id.incProgressBar).setVisibility(
+								View.GONE);
+						Intent Callintent = new Intent(this,
+								MifareUltralightCActivity.class);
+						Callintent
+								.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(Callintent);
-						overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-					}
-					else{
-						findViewById(R.id.incProgressBar).setVisibility(View.GONE);
-						CommonTask.createToast("Tap The card again!!!", this, Color.RED);
+						overridePendingTransition(android.R.anim.slide_in_left,
+								android.R.anim.slide_out_right);
+					} else {
+						findViewById(R.id.incProgressBar).setVisibility(
+								View.GONE);
+						CommonTask.createToast("Tap The card again!!!", this,
+								Color.RED);
 					}
 					break;
 				}
 			} else if (techList[i].equals(IsoDep.class.getName())) {
-				// info[1] = "IsoDep";
 				@SuppressWarnings("unused")
 				IsoDep isoDepTag = IsoDep.get(tag);
-			/*	CommonTask
-				.createToast(
-						"This Tag is IsoDep tag. We will Add this type in next version",
-						this, Color.GREEN);*/
+
+				CommonTask
+						.createToast(
+								"This Tag is IsoDep tag. We will Add this type in next version",
+								this, Color.GREEN);
+
 				// info[0] += "IsoDep \n";
+				findViewById(R.id.incProgressBar).setVisibility(View.GONE);
 			} else if (techList[i].equals(Ndef.class.getName())) {
-				Ndef.get(tag);
-				/*CommonTask
-				.createToast(
-						"This Tag is NDEF Tag. We will Add this type in next version",
-						this, Color.GREEN);*/
+				// This Is Topaz Tag
+				NFCHammer hammer = new NFCHammer();
+				if (hammer.readTopazCard(tag)) {
+					findViewById(R.id.incProgressBar).setVisibility(View.GONE);
+				}
+
 			} else if (techList[i].equals(NdefFormatable.class.getName())) {
 				@SuppressWarnings("unused")
 				NdefFormatable ndefFormatableTag = NdefFormatable.get(tag);
-			/*	CommonTask
-				.createToast(
-						"This Tag is NDEF formatable Tag. We will Add this type in next version",
-						this, Color.GREEN);*/
+				findViewById(R.id.incProgressBar).setVisibility(View.GONE);
+
+				CommonTask
+						.createToast(
+								"This Tag is NDEF formatable Tag. We will Add this type in next version",
+								this, Color.GREEN);
+
 			}
 		}
 	}
-	
-	public void showProgressDialog(){
+
+	public void showProgressDialog() {
 		runOnUiThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				findViewById(R.id.incProgressBar).setVisibility(View.VISIBLE);
 			}
 		});
 	}
-	
-	
+
 }
